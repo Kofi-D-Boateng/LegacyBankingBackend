@@ -1,8 +1,22 @@
 package com.legacybanking.legacyBankingAPI.customer;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
+@Entity
+@Table
 public class Customer {
+    @Id
+    @SequenceGenerator(
+            name= "customer_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_sequence"
+    )
     private Long id;
     private String name;
     private LocalDate dob;
@@ -11,6 +25,11 @@ public class Customer {
     private String state;
     private Long zipcode;
     private String socialSecurity;
+    @Transient
+    private Integer age;
+
+    public Customer() {
+    }
 
     public Customer(Long id, String name, LocalDate dob, String email, String country, String state, Long zipcode, String socialSecurity) {
         this.id = id;
@@ -83,6 +102,14 @@ public class Customer {
 
     public Long getZipcode() {
         return zipcode;
+    }
+
+    public Integer getAge() {
+        return Period.between(dob, LocalDate.now()).getYears();
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public void setZipcode(Long zipcode) {
