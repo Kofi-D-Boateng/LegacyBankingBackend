@@ -1,23 +1,32 @@
 package com.legacybanking.legacyBankingAPI.customer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerService {
+@AllArgsConstructor
+public class CustomerService implements UserDetailsService {
 
-        private final CustomerRepository customerRepository;
+       private final static String USER_NOT_FOUND = "invalid email or password";
+       private final CustomerRepository customerRepository;
+       private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-        @Autowired
-        public CustomerService(CustomerRepository customerRepository) {
-            this.customerRepository = customerRepository;
-        }
-
-        public List<Customer> getCustomers(){
-            return customerRepository.findAll();
-        }
-
-        public void addNewCustomer(Customer customer){
-            System.out.println(customer);
-        }
+       @Override
+       public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+           return customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+       }
+       public String signUpCustomer(Customer customer){
+           boolean usedEmail = customerRepository.findByEmail(customer.getEmail()).isPresent();
+           if(usedEmail){
+               throw new IllegalStateException("Email is taken");
+           }
+           String encodedPassword = bCryptPasswordEncoder.encode(customer.getPassword());
+           customer.setPassword(encodedPassword);
+           customerRepository.save(customer);
+           return "";
+       };
 }

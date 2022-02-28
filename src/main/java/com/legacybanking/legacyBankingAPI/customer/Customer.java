@@ -1,12 +1,24 @@
 package com.legacybanking.legacyBankingAPI.customer;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.Period;
+import java.util.Collection;
+import java.util.Collections;
 
+@Getter
+@Setter
 @Entity
-@Table
-public class Customer {
+@EqualsAndHashCode
+@NoArgsConstructor
+public class Customer implements UserDetails {
     @Id
     @SequenceGenerator(
             name= "customer_sequence",
@@ -18,123 +30,79 @@ public class Customer {
             generator = "customer_sequence"
     )
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String password;
     private LocalDate dob;
     private String email;
     private String country;
     private String state;
     private Long zipcode;
     private String socialSecurity;
-    @Transient
-    private Integer age;
+    @Enumerated(EnumType.STRING)
+    private CustomerRole customerRole;
 
-    public Customer() {
-    }
-
-    public Customer(Long id, String name, LocalDate dob, String email, String country, String state, Long zipcode, String socialSecurity) {
-        this.id = id;
-        this.name = name;
+    public Customer(String firstName, String lastName, String password, LocalDate dob, String email, String country, String state, Long zipcode, String socialSecurity, CustomerRole customerRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
         this.dob = dob;
         this.email = email;
         this.country = country;
         this.state = state;
         this.zipcode = zipcode;
         this.socialSecurity = socialSecurity;
-    }
-
-    public Customer(String name, LocalDate dob, String email, String country, String state, Long zipcode, String socialSecurity) {
-        this.name = name;
-        this.dob = dob;
-        this.email = email;
-        this.country = country;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.socialSecurity = socialSecurity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public Long getZipcode() {
-        return zipcode;
-    }
-
-    public Integer getAge() {
-        return Period.between(dob, LocalDate.now()).getYears();
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public void setZipcode(Long zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public String getSocialSecurity() {
-        return socialSecurity;
-    }
-
-    public void setSocialSecurity(String socialSecurity) {
-        this.socialSecurity = socialSecurity;
+        this.customerRole = customerRole;
     }
 
     @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", dob=" + dob +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                ", state='" + state + '\'' +
-                ", zipcode=" + zipcode +
-                ", socialSecurity='" + socialSecurity + '\'' +
-                '}';
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customerRole.name());
+        return Collections.singletonList(authority);
     }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "Customer{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", dob=" + dob +
+//                ", email='" + email + '\'' +
+//                ", country='" + country + '\'' +
+//                ", state='" + state + '\'' +
+//                ", zipcode=" + zipcode +
+//                ", socialSecurity='" + socialSecurity + '\'' +
+//                '}';
+//    }
 }
