@@ -1,4 +1,4 @@
-package com.legacybanking.legacyBankingAPI.registration;
+package com.legacybanking.legacyBankingAPI.models;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

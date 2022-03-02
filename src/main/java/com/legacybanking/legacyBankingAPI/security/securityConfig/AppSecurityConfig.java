@@ -1,6 +1,6 @@
-package com.legacybanking.legacyBankingAPI.securityConfig;
+package com.legacybanking.legacyBankingAPI.security.securityConfig;
 
-import com.legacybanking.legacyBankingAPI.customer.CustomerService;
+import com.legacybanking.legacyBankingAPI.services.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,12 +31,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 //                ANT MACHERS = WHITELISTING
-                .antMatchers("/api/v1/customer/**")
+                .antMatchers("/api/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .formLogin().disable();
     }
 
     @Override

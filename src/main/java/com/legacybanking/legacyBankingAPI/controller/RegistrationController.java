@@ -1,5 +1,6 @@
-package com.legacybanking.legacyBankingAPI.registration;
-
+package com.legacybanking.legacyBankingAPI.controller;
+import com.legacybanking.legacyBankingAPI.models.RegistrationRequest;
+import com.legacybanking.legacyBankingAPI.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,12 +1,9 @@
-package com.legacybanking.legacyBankingAPI.registration;
-
-import com.legacybanking.legacyBankingAPI.customer.Customer;
-import com.legacybanking.legacyBankingAPI.customer.CustomerRole;
-import com.legacybanking.legacyBankingAPI.customer.CustomerService;
+package com.legacybanking.legacyBankingAPI.services;
+import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
+import com.legacybanking.legacyBankingAPI.models.Customer;
+import com.legacybanking.legacyBankingAPI.models.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor

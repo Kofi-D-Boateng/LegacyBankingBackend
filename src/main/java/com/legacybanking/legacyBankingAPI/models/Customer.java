@@ -1,5 +1,6 @@
-package com.legacybanking.legacyBankingAPI.customer;
+package com.legacybanking.legacyBankingAPI.models;
 
+import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
