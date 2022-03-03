@@ -23,7 +23,8 @@ public class CustomerService implements UserDetailsService {
            return customerRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
        }
 
-       public String signUpCustomer(Customer customer){
+
+       public boolean signUpCustomer(Customer customer){
            boolean usedEmail = customerRepo.findByEmail(customer.getEmail()).isPresent();
            if(usedEmail){
                throw new IllegalStateException("Email is taken");
@@ -31,6 +32,6 @@ public class CustomerService implements UserDetailsService {
            String encodedPassword = bCryptPasswordEncoder.encode(customer.getPassword());
            customer.setPassword(encodedPassword);
            customerRepo.save(customer);
-           return "";
-       };
+           return true;
+       }
 }
