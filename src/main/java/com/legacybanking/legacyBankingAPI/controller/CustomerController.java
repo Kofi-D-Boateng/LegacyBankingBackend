@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "api/v1/customer/")
@@ -31,6 +34,7 @@ public class CustomerController {
                 request.getState(),
                 request.getZipcode(),
                 request.getSocialSecurity(),
+                request.getCapital(),
                 CustomerRole.USER
         );
         return customerService.signUpCustomer(newCustomer);
@@ -39,6 +43,7 @@ public class CustomerController {
     @PostMapping("login")
     public UserDetails login(@RequestBody Customer customer){
         String email = customer.getEmail();
+        System.out.println("email = " + email);
         return customerService.loadUserByUsername(email);
     }
 
