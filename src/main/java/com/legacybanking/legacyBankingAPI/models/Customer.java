@@ -1,9 +1,9 @@
 package com.legacybanking.legacyBankingAPI.models;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +15,7 @@ import java.util.*;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(
@@ -85,6 +86,18 @@ public class Customer implements UserDetails {
             nullable = false
     )
     private double capital;
+//    @Column(
+//            name = "isLocked",
+//            columnDefinition = "default 'false'",
+//            nullable = false
+//    )
+//    private boolean locked;
+//    @Column(
+//            name = "isEnabled",
+//            columnDefinition = "default 'true'",
+//            nullable = false
+//    )
+//    private boolean enabled;
     @Enumerated(EnumType.STRING)
     private CustomerRole customerRole;
 //    @Enumerated(EnumType.ORDINAL)
@@ -93,7 +106,10 @@ public class Customer implements UserDetails {
 //    )
 //    private List<Double> transactionsList;
 
-    public Customer(String firstName, String lastName, String password, LocalDate dob, String email, String country, String state, Long zipcode ,String socialSecurity,double capital, CustomerRole customerRole) {
+
+    public Customer(String firstName, String lastName, String password, LocalDate dob, String email,
+                    String country, String state, Long zipcode, String socialSecurity, double capital,
+                  CustomerRole customerRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -105,7 +121,6 @@ public class Customer implements UserDetails {
         this.socialSecurity = socialSecurity;
         this.capital = capital;
         this.customerRole = customerRole;
-//        this.transactionsList = new ArrayList<>();
     }
 
     @Override
@@ -127,22 +142,22 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -161,18 +176,5 @@ public class Customer implements UserDetails {
                 ", capital=" + capital +
                 ", customerRole=" + customerRole +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Customer customer = (Customer) o;
-        return id != null && Objects.equals(id, customer.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

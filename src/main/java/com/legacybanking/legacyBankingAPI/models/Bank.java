@@ -14,6 +14,15 @@ import java.util.ArrayList;
 )
 public class Bank  {
     @Id
+    @SequenceGenerator(
+            name = "bank_sequence",
+            sequenceName = "bank_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "bank_sequence"
+    )
     private Long id;
     private String name;
     private String country;

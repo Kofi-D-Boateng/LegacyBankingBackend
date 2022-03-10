@@ -2,12 +2,14 @@ package com.legacybanking.legacyBankingAPI.services;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRepo;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -15,14 +17,16 @@ import org.springframework.stereotype.Service;
 public class CustomerService implements UserDetailsService {
 
        private final static String USER_NOT_FOUND = "invalid email or password";
-       @Autowired
        private final CustomerRepo customerRepo;
        private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
        @Override
        public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-           System.out.println(email);
-           return customerRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+           Optional<Customer> customer = customerRepo.findByEmail(email);
+           if(customer.isEmpty()){
+               throw new UsernameNotFoundException(USER_NOT_FOUND);
+           }
+           return new User(customer.get().getUsername(),customer.get().getPassword(),customer.get().getAuthorities());
        }
 
 
