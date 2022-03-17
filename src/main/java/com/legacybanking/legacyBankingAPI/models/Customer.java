@@ -1,27 +1,24 @@
 package com.legacybanking.legacyBankingAPI.models;
+
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Objects;
 
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(
         name = "customer"
 )
-public class Customer implements UserDetails {
+public class Customer {
     @Id
     @SequenceGenerator(
             name= "customer_sequence",
@@ -86,18 +83,28 @@ public class Customer implements UserDetails {
             nullable = false
     )
     private double capital;
-//    @Column(
-//            name = "isLocked",
-//            columnDefinition = "default 'false'",
-//            nullable = false
-//    )
-//    private boolean locked;
-//    @Column(
-//            name = "isEnabled",
-//            columnDefinition = "default 'true'",
-//            nullable = false
-//    )
-//    private boolean enabled;
+    @Column(
+            name = "isLocked",
+            columnDefinition = "default 'false'",
+            nullable = false
+    )
+    private boolean locked;
+    @Column(
+            name = "isEnabled",
+            columnDefinition = "default 'true'",
+            nullable = false
+    )
+    private boolean enabled;
+    @Column(
+            name = "account_number",
+            columnDefinition = "VARCHAR(50) default null"
+    )
+    private String accountNumber;
+    @Column(
+            name = "routing_number",
+            columnDefinition = "VARCHAR(50) default null"
+    )
+    private String routingNumber;
     @Enumerated(EnumType.STRING)
     private CustomerRole customerRole;
 //    @Enumerated(EnumType.ORDINAL)
@@ -124,43 +131,6 @@ public class Customer implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customerRole.name());
-        return Collections.singletonList(authority);
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
@@ -176,5 +146,18 @@ public class Customer implements UserDetails {
                 ", capital=" + capital +
                 ", customerRole=" + customerRole +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Customer customer = (Customer) o;
+        return id != null && Objects.equals(id, customer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
