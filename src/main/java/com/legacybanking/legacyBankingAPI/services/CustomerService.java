@@ -1,11 +1,14 @@
 package com.legacybanking.legacyBankingAPI.services;
 
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRepo;
+import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 
@@ -33,7 +38,10 @@ public class CustomerService implements UserDetailsService {
            if(customer.isEmpty()){
                throw new UsernameNotFoundException(USER_NOT_FOUND);
            }
-           return new CustomerDetails(customer.get());
+           Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+           authorities.add(new SimpleGrantedAuthority(CustomerRole.USER.name()));
+           return new User(customer.get().getEmail(),customer.get().getPassword(),authorities);
+//           return new CustomerDetails(customer.get());
        }
 
 

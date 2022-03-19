@@ -1,17 +1,21 @@
 package com.legacybanking.legacyBankingAPI.security.securityConfig;
 
-
 import com.legacybanking.legacyBankingAPI.security.jwt.JWTTokenGeneratorFilter;
-import com.legacybanking.legacyBankingAPI.security.jwt.JwtVerifierFilter;
+//import com.legacybanking.legacyBankingAPI.security.jwt.JwtVerifierFilter;
 import com.legacybanking.legacyBankingAPI.services.CustomerService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,20 +25,38 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-@AllArgsConstructor
+
 @EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final CustomerService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final CustomerService customerService;
+
+    @Autowired
+    public AppSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, CustomerService customerService){
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.customerService = customerService;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        JWTTokenGeneratorFilter jwtTokenGeneratorFilter = new JWTTokenGeneratorFilter(authenticationManager());
+        jwtTokenGeneratorFilter.setFilterProcessesUrl("/api/v1/auth/login");
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .cors().configurationSource(new CorsConfigurationSource() {
@@ -51,12 +73,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }) .and()
                 .csrf().disable()
-                .addFilterBefore(new JwtVerifierFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+//                .addFilterBefore(new JwtVerifierFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(jwtTokenGeneratorFilter)
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/customer/**").hasRole("USER")
-                .and().httpBasic();
+                .antMatchers("/api/v1/customer/**").hasRole("USER").anyRequest().authenticated();
     }
 
 }

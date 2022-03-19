@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public String login(@RequestBody CustomerModel customerModel) throws Exception {
+    public UserDetails login(@RequestBody CustomerModel customerModel) throws Exception {
         log.info("Logging in user:{}",customerModel);
         String rawPassword = customerModel.getPassword();
         UserDetails user = loginService.loginUser(customerModel);
@@ -35,6 +35,6 @@ public class AuthController {
         if(!passwordChecker){
             throw new Exception("Invalid credentials");
         }
-        return user.getUsername();
+        return user;
     }
 }

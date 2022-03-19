@@ -38,7 +38,7 @@ public class CustomerDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return customer.isLocked();
+        return true;
     }
 
     @Override
@@ -48,6 +48,6 @@ public class CustomerDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return customer.isEnabled();
+        return true;
     }
 }
