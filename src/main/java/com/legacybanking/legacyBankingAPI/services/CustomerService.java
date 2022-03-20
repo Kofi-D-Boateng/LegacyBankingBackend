@@ -25,24 +25,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class CustomerService implements UserDetailsService {
+public class CustomerService {
 
        private final static String USER_NOT_FOUND = "invalid email or password";
        @Autowired
        private final CustomerRepo customerRepo;
        private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-       @Override
-       public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+       public Customer loginUser(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
-           if(customer.isEmpty()){
+           return customer.orElseThrow(()->{
                throw new UsernameNotFoundException(USER_NOT_FOUND);
-           }
-           Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-           authorities.add(new SimpleGrantedAuthority(CustomerRole.USER.name()));
-           return new User(customer.get().getEmail(),customer.get().getPassword(),authorities);
-//           return new CustomerDetails(customer.get());
+           });
        }
+
+//       @Override
+//       public Customer loadUserByUsername(String username) throws UsernameNotFoundException {
+//
+//       }
 
 
        public boolean signUpCustomer(Customer customer){

@@ -30,40 +30,44 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserDetailsService userDetailsService;
-    private final CustomerService customerService;
 
-    @Autowired
-    public AppSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, CustomerService customerService){
-        this.userDetailsService = userDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.customerService = customerService;
-    }
+//    WE ARE USING A DIFFERENT TYPE OF AUTHENTICATION FOR FRONT END USERS
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder);
-    }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final UserDetailsService userDetailsService;
+//    private final CustomerService customerService;
+//
+//    @Autowired
+//    public AppSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, CustomerService customerService){
+//        this.userDetailsService = userDetailsService;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//        this.customerService = customerService;
+//    }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder);
+//    }
+//
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         JWTTokenGeneratorFilter jwtTokenGeneratorFilter = new JWTTokenGeneratorFilter(authenticationManager());
-        jwtTokenGeneratorFilter.setFilterProcessesUrl("/api/v1/auth/login");
+        jwtTokenGeneratorFilter.setFilterProcessesUrl("/api/v1/authentication/login");
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .cors().configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:8081"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
@@ -74,9 +78,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 }) .and()
                 .csrf().disable()
 //                .addFilterBefore(new JwtVerifierFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(jwtTokenGeneratorFilter)
+//                .addFilter(jwtTokenGeneratorFilter)
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/api/v1/authentication/**").permitAll()
                 .antMatchers("/api/v1/customer/**").hasRole("USER").anyRequest().authenticated();
     }
 
