@@ -4,11 +4,14 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
 @Getter
 @Setter
+@ToString
+@AllArgsConstructor
 @NoArgsConstructor
 public class Branch {
     @Id
@@ -17,21 +20,18 @@ public class Branch {
     private String country;
     private String state;
     private String zipcode;
-    private ArrayList<Customer> customers;
-
-    public Branch(String name, String country, String state, String zipcode) {
-        this.name = name;
-        this.country = country;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.customers = new ArrayList<>();
-    }
-
-    public Branch(String country, String state, String zipcode) {
-        this.country = country;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.customers = new ArrayList<>();
-    }
+    @Column(name = "branch_customers")
+    @ManyToMany
+    @JoinTable(
+            name = "branch_customer",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "branch_id")
+    )
+    @ToString.Exclude
+    private Set<Customer> branchCustomers;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bank_id")
+    @ToString.Exclude
+    private Bank bank;
 
 }

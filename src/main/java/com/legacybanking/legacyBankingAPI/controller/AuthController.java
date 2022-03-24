@@ -7,7 +7,6 @@ import com.legacybanking.legacyBankingAPI.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,6 @@ public class AuthController {
     private LoginService loginService;
     @Autowired
     private RegistrationService registrationService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("registration")
     public boolean register(@RequestBody CustomerModel customerModel){
