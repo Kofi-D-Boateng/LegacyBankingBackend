@@ -50,6 +50,7 @@ public class CustomerService {
            customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
            customer.setAccountNumber(bCryptPasswordEncoder.encode(accountNumber));
            customer.setRoutingNumber(bCryptPasswordEncoder.encode(routingNumber));
+           customer.setSocialSecurity(bCryptPasswordEncoder.encode(customer.getSocialSecurity()));
            customer.setEnabled(false);
            customer.setLocked(true);
            customerRepo.save(customer);
