@@ -4,9 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(
         name = "bank"
@@ -14,14 +16,8 @@ import java.util.ArrayList;
 )
 public class Bank  {
     @Id
-    @SequenceGenerator(
-            name = "bank_sequence",
-            sequenceName = "bank_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "bank_sequence"
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
     private String name;
@@ -33,31 +29,12 @@ public class Bank  {
             columnDefinition = "Decimal(10,2) default '0.00'"
     )
     private double totalHoldings;
-    private ArrayList<Branch> branches;
+    @Column(
+            name = "branches"
+    )
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bank")
+    private List<Branch> branches;
 
-    public Bank(String name, String country, String state, String zipcode, double totalHoldings) {
-        this.name = name;
-        this.country = country;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.totalHoldings = totalHoldings;
-        this.branches = new ArrayList<>();
-    }
-
-    public Bank(String name, String country, double totalHoldings) {
-        this.name = name;
-        this.country = country;
-        this.totalHoldings = totalHoldings;
-        this.branches = new ArrayList<>();
-    }
-
-    public Bank(String name, String country, String state, double totalHoldings) {
-        this.name = name;
-        this.country = country;
-        this.state = state;
-        this.totalHoldings = totalHoldings;
-        this.branches = new ArrayList<>();
-    }
 
     @Override
     public String toString() {

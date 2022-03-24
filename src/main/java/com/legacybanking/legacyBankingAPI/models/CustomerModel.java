@@ -18,10 +18,6 @@ public class CustomerModel {
     private String state;
     private Long zipcode;
     private String socialSecurity;
-    private double capital;
+    private Double capital;
 
-    public CustomerModel(String password, String email) {
-        this.password = password;
-        this.email = email;
-    }
 }

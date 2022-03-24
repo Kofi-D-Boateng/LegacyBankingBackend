@@ -1,27 +1,25 @@
 package com.legacybanking.legacyBankingAPI.models;
+
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(
         name = "customer"
 )
-public class Customer implements UserDetails {
+public class Customer {
     @Id
     @SequenceGenerator(
             name= "customer_sequence",
@@ -85,27 +83,45 @@ public class Customer implements UserDetails {
             columnDefinition = "Decimal(10,2) default '0.00'",
             nullable = false
     )
-    private double capital;
-//    @Column(
-//            name = "isLocked",
-//            columnDefinition = "default 'false'",
-//            nullable = false
-//    )
-//    private boolean locked;
-//    @Column(
-//            name = "isEnabled",
-//            columnDefinition = "default 'true'",
-//            nullable = false
-//    )
-//    private boolean enabled;
+    private Double capital;
+    @Column(
+            name = "isLocked",
+            columnDefinition = "default 'false'",
+            nullable = false
+    )
+    private Boolean locked;
+    @Column(
+            name = "isEnabled",
+            columnDefinition = "default 'true'",
+            nullable = false
+    )
+    private Boolean enabled;
+    @Column(
+            name = "account_number",
+            columnDefinition = "VARCHAR(255) default null",
+            nullable = false
+    )
+    private String accountNumber;
+    @Column(
+            name = "routing_number",
+            columnDefinition = "VARCHAR(255) default null",
+            nullable = false
+    )
+    private String routingNumber;
     @Enumerated(EnumType.STRING)
     private CustomerRole customerRole;
-//    @Enumerated(EnumType.ORDINAL)
-//    @Column(
-//            name = "transactions"
-//    )
-//    private List<Double> transactionsList;
-
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "transactions"
+    )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    private List<Transaction> transactions;
+    @Column(
+            name="branches_banked_at"
+    )
+    @ManyToMany(mappedBy = "branchCustomers")
+    @ToString.Exclude
+    private List<Branch> branches;
 
     public Customer(String firstName, String lastName, String password, LocalDate dob, String email,
                     String country, String state, Long zipcode, String socialSecurity, double capital,
@@ -124,57 +140,15 @@ public class Customer implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customerRole.name());
-        return Collections.singletonList(authority);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Customer customer = (Customer) o;
+        return id != null && Objects.equals(id, customer.id);
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", dob=" + dob +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                ", state='" + state + '\'' +
-                ", zipcode=" + zipcode +
-                ", socialSecurity='" + socialSecurity + '\'' +
-                ", capital=" + capital +
-                ", customerRole=" + customerRole +
-                '}';
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
