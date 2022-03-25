@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
-@RequestMapping(path = "api/v1/bank/")
+@RequestMapping(path = "/api/v1/bank/")
 public class BankController {
 
     private final BankService bankService;
@@ -19,7 +19,7 @@ public class BankController {
         this.bankService = bankService;
     }
 
-    @GetMapping("/info")
+    @GetMapping("info")
     public List<Bank> getBankInfo(){
         return bankService.getBank();
     }

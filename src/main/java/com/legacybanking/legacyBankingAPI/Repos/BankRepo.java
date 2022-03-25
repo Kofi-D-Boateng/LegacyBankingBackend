@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 @Transactional(readOnly = true)
 public interface BankRepo extends JpaRepository<Bank, Long> {
-
 }
 

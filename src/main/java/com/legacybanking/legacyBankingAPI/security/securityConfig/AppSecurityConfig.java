@@ -81,6 +81,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .addFilter(jwtTokenGeneratorFilter)
                 .authorizeRequests()
                 .antMatchers("/api/v1/authentication/**").permitAll()
+                .antMatchers("/api/v1/bank/**").permitAll()
                 .antMatchers("/api/v1/customer/**").hasRole("USER").anyRequest().authenticated();
     }
 

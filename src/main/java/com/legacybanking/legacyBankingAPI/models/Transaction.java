@@ -1,5 +1,6 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -27,7 +28,8 @@ public class Transaction {
     )
     private Double amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "customer_id")
     @ToString.Exclude
     private Customer customer;

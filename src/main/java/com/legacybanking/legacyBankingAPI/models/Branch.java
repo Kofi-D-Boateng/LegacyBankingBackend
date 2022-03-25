@@ -1,6 +1,9 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +27,19 @@ public class Branch {
     @ManyToMany
     @JoinTable(
             name = "branch_customer",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "branch_id")
+            joinColumns = @JoinColumn(name = "branch_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id")
     )
     @ToString.Exclude
     private Set<Customer> branchCustomers;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "bank_id")
-    @ToString.Exclude
+    @JsonBackReference
     private Bank bank;
+    @Column(
+            name="branch_holdings",
+            nullable = false
+    )
+    private Double branchHoldings;
 
 }

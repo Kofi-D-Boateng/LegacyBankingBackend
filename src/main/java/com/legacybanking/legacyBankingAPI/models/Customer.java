@@ -1,7 +1,9 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -115,13 +117,8 @@ public class Customer {
             name = "transactions"
     )
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    @JsonManagedReference
     private List<Transaction> transactions;
-    @Column(
-            name="branches_banked_at"
-    )
-    @ManyToMany(mappedBy = "branchCustomers")
-    @ToString.Exclude
-    private List<Branch> branches;
 
     public Customer(String firstName, String lastName, String password, LocalDate dob, String email,
                     String country, String state, Long zipcode, String socialSecurity, double capital,

@@ -1,10 +1,11 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -26,14 +27,16 @@ public class Bank  {
     private String zipcode;
     @Column(
             name = "total_holdings",
-            columnDefinition = "Decimal(10,2) default '0.00'"
+            columnDefinition = "Decimal default '0.00'"
     )
-    private double totalHoldings;
+    private Double totalHoldings;
     @Column(
-            name = "branches"
+            name = "branches",
+            nullable = true
     )
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bank")
-    private List<Branch> branches;
+   @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "bank")
+    private Set<Branch> branches;
 
 
     @Override
