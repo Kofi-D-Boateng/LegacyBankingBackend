@@ -7,7 +7,7 @@ import com.legacybanking.legacyBankingAPI.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Customer login(@RequestBody CustomerModel customerModel) throws Exception {
+    public Customer login(@RequestBody CustomerModel customerModel) throws UsernameNotFoundException {
         log.info("Logging in user:{}",customerModel);
         return loginService.loginUser(customerModel);
 

@@ -25,6 +25,14 @@ public class CustomerService {
        private final CustomerRepo customerRepo;
        private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+       public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
+           Optional<Customer> customer = customerRepo.findByEmail(username);
+
+           return customer.orElseThrow(()->{
+               throw new UsernameNotFoundException(USER_NOT_FOUND);
+           });
+       }
+
        public Customer loginUser(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
            return customer.orElseThrow(()->{
