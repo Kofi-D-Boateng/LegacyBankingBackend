@@ -17,21 +17,7 @@ public class RegistrationService {
         if(validEmail == null){
             return false;
         }else{
-            return customerService.signUpCustomer(
-                    new Customer(
-                            customerModel.getFirstName(),
-                            customerModel.getLastName(),
-                            customerModel.getPassword(),
-                            customerModel.getDob(),
-                            customerModel.getEmail(),
-                            customerModel.getCountry(),
-                            customerModel.getState(),
-                            customerModel.getZipcode(),
-                            customerModel.getSocialSecurity(),
-                            customerModel.getCapital(),
-                            CustomerRole.USER
-                    )
-            );
+            return customerService.signUpCustomer(customerModel);
         }
     }
 }

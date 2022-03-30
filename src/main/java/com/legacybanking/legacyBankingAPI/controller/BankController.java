@@ -20,7 +20,8 @@ public class BankController {
     }
 
     @GetMapping("info")
-    public List<Bank> getBankInfo(){
-        return bankService.getBank();
+    public Bank getBankInfo(){
+        List<Bank> banks = bankService.getBank();
+        return banks.get(0);
     }
 }

@@ -2,12 +2,11 @@ package com.legacybanking.legacyBankingAPI.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -31,12 +30,11 @@ public class Bank  {
     )
     private Double totalHoldings;
     @Column(
-            name = "branches",
-            nullable = true
+            name = "branches"
     )
-   @JsonManagedReference
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "bank")
-    private Set<Branch> branches;
+    private List<Branch> branches;
 
 
     @Override

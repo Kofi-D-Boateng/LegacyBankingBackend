@@ -72,7 +72,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/authentication/**").permitAll()
                 .antMatchers("/api/v1/bank/**").permitAll()
-                .antMatchers("/api/v1/customer/**").permitAll();
+                .antMatchers("/api/v1/customer/**").permitAll()
+                .antMatchers("/api/v1/secure/transaction/**").permitAll();
     }
 
 }

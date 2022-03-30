@@ -19,5 +19,6 @@ public class CustomerModel {
     private Long zipcode;
     private String socialSecurity;
     private Double capital;
+    private Long phoneNumber;
 
 }

@@ -27,12 +27,16 @@ public class Transaction {
             nullable = false
     )
     private Double amount;
-
     @ManyToOne(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "customer_id")
     @ToString.Exclude
     private Customer customer;
+    @Column(
+            name = "used_card",
+            nullable = false
+    )
+    private Long cardNumber;
     @Column(
             name = "location",
             nullable = false
@@ -48,6 +52,15 @@ public class Transaction {
             nullable = false
     )
     private LocalDate dateOfTransaction;
+
+    public Transaction(Double amount, Customer customer, Long cardNumber, String location, String type, LocalDate dateOfTransaction) {
+        this.amount = amount;
+        this.customer = customer;
+        this.cardNumber = cardNumber;
+        this.location = location;
+        this.type = type;
+        this.dateOfTransaction = dateOfTransaction;
+    }
 
     @Override
     public boolean equals(Object o) {

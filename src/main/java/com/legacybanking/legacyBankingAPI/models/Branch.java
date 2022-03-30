@@ -31,7 +31,7 @@ public class Branch {
             inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id")
     )
     @ToString.Exclude
-    private Set<Customer> branchCustomers;
+    private List<Customer> branchCustomers;
     @ManyToOne
     @JoinColumn(name = "bank_id")
     @JsonBackReference

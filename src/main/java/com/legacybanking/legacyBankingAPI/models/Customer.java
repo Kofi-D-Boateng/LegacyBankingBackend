@@ -3,9 +3,7 @@ package com.legacybanking.legacyBankingAPI.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -87,17 +85,10 @@ public class Customer {
     )
     private Double capital;
     @Column(
-            name = "isLocked",
-            columnDefinition = "default 'false'",
+            name = "phone_number",
             nullable = false
     )
-    private Boolean locked;
-    @Column(
-            name = "isEnabled",
-            columnDefinition = "default 'true'",
-            nullable = false
-    )
-    private Boolean enabled;
+    private Long phoneNumber;
     @Column(
             name = "account_number",
             columnDefinition = "VARCHAR(255) default null",
@@ -110,6 +101,26 @@ public class Customer {
             nullable = false
     )
     private String routingNumber;
+    @Column(
+            name = "card_number"
+    )
+    private Long cardNumber;
+    @Column(
+            name = "cvc"
+    )
+    private Integer cvc;
+    @Column(
+            name = "isLocked",
+            columnDefinition = "default 'false'",
+            nullable = false
+    )
+    private Boolean locked;
+    @Column(
+            name = "isEnabled",
+            columnDefinition = "default 'true'",
+            nullable = false
+    )
+    private Boolean enabled;
     @Enumerated(EnumType.STRING)
     private CustomerRole customerRole;
     @Enumerated(EnumType.STRING)
@@ -121,8 +132,9 @@ public class Customer {
     private List<Transaction> transactions;
 
     public Customer(String firstName, String lastName, String password, LocalDate dob, String email,
-                    String country, String state, Long zipcode, String socialSecurity, double capital,
-                  CustomerRole customerRole) {
+                    String country, String state, Long zipcode, String socialSecurity, Double capital,
+                    Long phoneNumber, String accountNumber, String routingNumber, Long cardNumber,
+                    Integer cvc, Boolean locked, Boolean enabled, CustomerRole customerRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -133,6 +145,13 @@ public class Customer {
         this.zipcode = zipcode;
         this.socialSecurity = socialSecurity;
         this.capital = capital;
+        this.phoneNumber = phoneNumber;
+        this.accountNumber = accountNumber;
+        this.routingNumber = routingNumber;
+        this.cardNumber = cardNumber;
+        this.cvc = cvc;
+        this.locked = locked;
+        this.enabled = enabled;
         this.customerRole = customerRole;
     }
 

@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface BranchRepo extends JpaRepository<Branch,Long> {
     Optional<Branch> findByName(String name);
     Optional<Branch> findByCountry(String name);
-    Optional<Branch> findByZipcode(String zipcode);
+    Branch findByZipcode(String zipcode);
     Optional<Branch> findByState(String state);
 }

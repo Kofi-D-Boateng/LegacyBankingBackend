@@ -1,6 +1,5 @@
 package com.legacybanking.legacyBankingAPI.models;
 
-import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
