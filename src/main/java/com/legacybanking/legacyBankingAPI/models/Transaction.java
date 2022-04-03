@@ -33,10 +33,9 @@ public class Transaction {
     @ToString.Exclude
     private Customer customer;
     @Column(
-            name = "used_card",
-            nullable = false
+            name = "account_number"
     )
-    private Long cardNumber;
+    private String accountNumber;
     @Column(
             name = "location",
             nullable = false
@@ -53,10 +52,10 @@ public class Transaction {
     )
     private LocalDate dateOfTransaction;
 
-    public Transaction(Double amount, Customer customer, Long cardNumber, String location, String type, LocalDate dateOfTransaction) {
+    public Transaction(Double amount, Customer customer, String accountNumber, String location, String type, LocalDate dateOfTransaction) {
         this.amount = amount;
         this.customer = customer;
-        this.cardNumber = cardNumber;
+        this.accountNumber = accountNumber;
         this.location = location;
         this.type = type;
         this.dateOfTransaction = dateOfTransaction;
