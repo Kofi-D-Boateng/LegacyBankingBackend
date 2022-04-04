@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface CustomerRepo extends JpaRepository<Customer,Long> {
     Optional<Customer> findByEmail(String email);
     @Query("select c from Customer c where c.phoneNumber = ?1")
-    Customer findTransfereeByPhoneNumber(Long PN);
+    Optional<Customer> findTransfereeByPhoneNumber(Long PN);
     @Query("select c from Customer c where c.cardNumber = ?1")
     Customer findByCardNumber(Long cardNumber);
+    @Query("select c from Customer c where c.accountNumber = ?1")
+    Customer findByAccountNumber(String accountNumber);
 }

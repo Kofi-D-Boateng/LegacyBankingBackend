@@ -12,7 +12,9 @@ import java.time.LocalDate;
 public class TransactionModel {
     private Double amount;
     private Long cardNumber;
+    private String accountNumber;
     private Long phoneNumberOfTransferee;
+    private String emailOfTransferee;
     private int cvc;
     private String location;
     private String zipcode;

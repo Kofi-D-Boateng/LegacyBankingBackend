@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -34,7 +35,7 @@ public class TransactionService {
     private static final String WITHDRAWAL = "withdrawal";
     private static final String ACHDEBIT = "ACH Debit";
     private static final String ACHCREDIT = "ACH Credit";
-    private static final String TRANSFER = "TRANSFER";
+    private static final String TRANSFER = "transfer";
     private static final String CREDIT = "Credit";
     private static final String DEBIT = "Debit";
     private final Date date = new Date();
@@ -87,7 +88,7 @@ public class TransactionService {
                 transactionRepo.save(new Transaction(
                         transaction.getAmount(),
                         customer,
-                        transaction.getCardNumber(),
+                        customer.getAccountNumber(),
                         transaction.getLocation(),
                         transaction.getType(),
                         transaction.getDateOfTransaction()
@@ -101,7 +102,7 @@ public class TransactionService {
        transactionRepo.save(new Transaction(
                transaction.getAmount(),
                customer,
-               transaction.getCardNumber(),
+               customer.getAccountNumber(),
                transaction.getLocation(),
                transaction.getType(),
                transaction.getDateOfTransaction()
@@ -176,7 +177,7 @@ public class TransactionService {
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
-                    transaction.getCardNumber(),
+                    customer.getAccountNumber(),
                     transaction.getLocation(),
                     transaction.getType(),
                     transaction.getDateOfTransaction()
@@ -195,7 +196,7 @@ public class TransactionService {
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
-                    transaction.getCardNumber(),
+                    customer.getAccountNumber(),
                     transaction.getLocation(),
                     transaction.getType(),
                     transaction.getDateOfTransaction()
@@ -215,17 +216,13 @@ public class TransactionService {
         String location = transaction.getLocation();
         List<Bank> bank = bankRepo.findAll();
         List<Branch> branches = branchRepo.findAll();
-        Customer customer = customerRepo.findByCardNumber(transaction.getCardNumber());
+        Customer customer = customerRepo.findByAccountNumber(transaction.getAccountNumber());
 
         log.info("TRANSACTION: {}", transaction);
+        log.info("CUSTOMER: {}",customer);
 
         if(location == null){
             log.info("Faulty transaction attempted at this time:{}",timestamp);
-            return false;
-        }
-
-        if(transaction.getCvc() != customer.getCvc()){
-            log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,location);
             return false;
         }
 
@@ -236,26 +233,32 @@ public class TransactionService {
 
 
         if(transaction.getType().equals(TRANSFER)){
-//            WE MUST REDISTRIBUTE ALL FUNDS ACROSS OUR BRANCHES AFTER THIS TRANSACTION.
-            Customer transferee = customerRepo.findTransfereeByPhoneNumber(transaction.getPhoneNumberOfTransferee());
+
+
+            Optional<Customer> transferee = transaction.getPhoneNumberOfTransferee() != null
+                    ? customerRepo.findTransfereeByPhoneNumber(transaction.getPhoneNumberOfTransferee())
+                    : customerRepo.findByEmail(transaction.getEmailOfTransferee());
+            log.info("TRANSFEE:{}",transferee);
+            if(transferee.isEmpty()){
+                return false;
+            }else{
+                log.info("TRANSFEE:{}",transferee.get());
+                transaction.setIsTransferringToOutsideBank(false);
+            }
 
             if(!transaction.getIsTransferringToOutsideBank()){
-                if(transferee == null){
-                    return false;
-                }
 
-                transferee.setCapital(transferee.getCapital() + transaction.getAmount());
+                transferee.get().setCapital(transferee.get().getCapital() + transaction.getAmount());
                 customer.setCapital(customer.getCapital() - transaction.getAmount());
-
                 transactionRepo.save(new Transaction(
                         transaction.getAmount(),
                         customer,
-                        transaction.getCardNumber(),
+                        customer.getAccountNumber(),
                         transaction.getLocation(),
                         transaction.getType(),
                         transaction.getDateOfTransaction()
                 ));
-                customerRepo.saveAll(List.of(customer,transferee));
+                customerRepo.saveAll(List.of(customer,transferee.get()));
                 return true;
             }
 
@@ -270,12 +273,12 @@ public class TransactionService {
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
-                    transaction.getCardNumber(),
+                    customer.getAccountNumber(),
                     transaction.getLocation(),
                     transaction.getType(),
                     transaction.getDateOfTransaction()
             ));
-            customerRepo.saveAll(List.of(customer,transferee));
+            customerRepo.saveAll(List.of(customer,transferee.get()));
             bankRepo.save(bank.get(0));
             return true;
         }
@@ -285,7 +288,7 @@ public class TransactionService {
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
-                    transaction.getCardNumber(),
+                    customer.getAccountNumber(),
                     transaction.getLocation(),
                     transaction.getType(),
                     transaction.getDateOfTransaction()
@@ -300,7 +303,7 @@ public class TransactionService {
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
-                    transaction.getCardNumber(),
+                    customer.getAccountNumber(),
                     transaction.getLocation(),
                     transaction.getType(),
                     transaction.getDateOfTransaction()
