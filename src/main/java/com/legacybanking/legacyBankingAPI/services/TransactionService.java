@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
@@ -35,7 +37,7 @@ public class TransactionService {
     private static final String WITHDRAWAL = "withdrawal";
     private static final String ACHDEBIT = "ACH Debit";
     private static final String ACHCREDIT = "ACH Credit";
-    private static final String TRANSFER = "transfer";
+    private static final String TRANSFER = "Debit transfer";
     private static final String CREDIT = "Credit";
     private static final String DEBIT = "Debit";
     private final Date date = new Date();
@@ -213,7 +215,6 @@ public class TransactionService {
 
     @Transactional
     public boolean accountTransfer(TransactionModel transaction){
-        String location = transaction.getLocation();
         List<Bank> bank = bankRepo.findAll();
         List<Branch> branches = branchRepo.findAll();
         Customer customer = customerRepo.findByAccountNumber(transaction.getAccountNumber());
@@ -221,13 +222,8 @@ public class TransactionService {
         log.info("TRANSACTION: {}", transaction);
         log.info("CUSTOMER: {}",customer);
 
-        if(location == null){
-            log.info("Faulty transaction attempted at this time:{}",timestamp);
-            return false;
-        }
-
         if(!customer.getEnabled() || customer.getLocked()){
-            log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,location);
+            log.info("Faulty transaction attempted at this time:{}",timestamp);
             return false;
         }
 
@@ -239,15 +235,40 @@ public class TransactionService {
                     ? customerRepo.findTransfereeByPhoneNumber(transaction.getPhoneNumberOfTransferee())
                     : customerRepo.findByEmail(transaction.getEmailOfTransferee());
             log.info("TRANSFEE:{}",transferee);
+
             if(transferee.isEmpty()){
-                return false;
+                String message = "Debit transfer";
+                transaction.setLocation(message);
+                customer.setCapital(customer.getCapital() - transaction.getAmount());
+                bank.get(0).setTotalHoldings(bank.get(0).getTotalHoldings()-transaction.getAmount());
+                BigDecimal bankHoldings = BigDecimal.valueOf(bank.get(0).getTotalHoldings());
+                Double newBranchHoldings = bankHoldings.multiply(BigDecimal.valueOf(100)).divide(new BigDecimal(branches.size()),2,RoundingMode.HALF_UP).doubleValue();
+
+
+                for (Branch branch: branches) {
+                    branch.setBranchHoldings(newBranchHoldings);
+                    branchRepo.save(branch);
+                }
+
+                transactionRepo.save(new Transaction(
+                        transaction.getAmount(),
+                        customer,
+                        customer.getAccountNumber(),
+                        transaction.getLocation(),
+                        transaction.getType(),
+                        transaction.getDateOfTransaction()
+                ));
+                customerRepo.save(customer);
+                bankRepo.save(bank.get(0));
+                return true;
             }else{
                 log.info("TRANSFEE:{}",transferee.get());
                 transaction.setIsTransferringToOutsideBank(false);
             }
 
             if(!transaction.getIsTransferringToOutsideBank()){
-
+                String message = "Debit transfer to " + transferee.get().getFirstName()  + " " + transferee.get().getLastName();
+                transaction.setLocation(message);
                 transferee.get().setCapital(transferee.get().getCapital() + transaction.getAmount());
                 customer.setCapital(customer.getCapital() - transaction.getAmount());
                 transactionRepo.save(new Transaction(
@@ -261,35 +282,16 @@ public class TransactionService {
                 customerRepo.saveAll(List.of(customer,transferee.get()));
                 return true;
             }
-
-            customer.setCapital(customer.getCapital() - transaction.getAmount());
-            bank.get(0).setTotalHoldings(bank.get(0).getTotalHoldings()-transaction.getAmount());
-
-            for (Branch branch: branches) {
-                branch.setBranchHoldings((bank.get(0).getTotalHoldings())/branches.size());
-                branchRepo.save(branch);
-            }
-            
-            transactionRepo.save(new Transaction(
-                    transaction.getAmount(),
-                    customer,
-                    customer.getAccountNumber(),
-                    transaction.getLocation(),
-                    transaction.getType(),
-                    transaction.getDateOfTransaction()
-            ));
-            customerRepo.saveAll(List.of(customer,transferee.get()));
-            bankRepo.save(bank.get(0));
-            return true;
         }
 
         if(transaction.getType().equals(ACHDEBIT)){
+            String message = "Debit transfer to " + transaction.getLocation();
             customer.setCapital(customer.getCapital() - transaction.getAmount());
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
                     customer.getAccountNumber(),
-                    transaction.getLocation(),
+                    message,
                     transaction.getType(),
                     transaction.getDateOfTransaction()
             ));
@@ -298,13 +300,15 @@ public class TransactionService {
         }
 
         if(transaction.getType().equals(ACHCREDIT)){
+            String message = "Credit transfer from " + transaction.getLocation();
+            transaction.setLocation(message);
             customer.setCapital(customer.getCapital() + transaction.getAmount());
             bank.get(0).setTotalHoldings(bank.get(0).getTotalHoldings()+ transaction.getAmount());
             transactionRepo.save(new Transaction(
                     transaction.getAmount(),
                     customer,
                     customer.getAccountNumber(),
-                    transaction.getLocation(),
+                    message,
                     transaction.getType(),
                     transaction.getDateOfTransaction()
             ));
