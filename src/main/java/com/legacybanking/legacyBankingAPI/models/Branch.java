@@ -24,7 +24,7 @@ public class Branch {
     private String state;
     private String zipcode;
     @Column(name = "branch_customers")
-    @ManyToMany
+    @OneToMany
     @JoinTable(
             name = "branch_customer",
             joinColumns = @JoinColumn(name = "branch_id", referencedColumnName = "id"),
