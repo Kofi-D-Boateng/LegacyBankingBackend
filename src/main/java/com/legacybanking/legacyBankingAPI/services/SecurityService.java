@@ -17,12 +17,13 @@ public class SecurityService {
     public boolean setSecurity(SecurityModel security){
         Customer customer = customerRepo.findByAccountNumber(security.getAccountNumber());
         if(security.isLockedCard()){
-            customer.setCardNumber(0L);
+            customer.setCardNumber(null);
+            customer.setLocked(security.isLockedCard());
             customerRepo.save(customer);
             return true;
         }
         if(security.isLockedAccount()){
-            customer.setLocked(security.isLockedAccount());
+            customer.setEnabled(false);
             customerRepo.save(customer);
             return true;
         }
