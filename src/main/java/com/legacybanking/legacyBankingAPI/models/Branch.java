@@ -41,5 +41,7 @@ public class Branch {
             nullable = false
     )
     private Double branchHoldings;
+    private Double longitude;
+    private Double latitude;
 
 }
