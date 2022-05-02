@@ -1,9 +1,11 @@
 package com.legacybanking.legacyBankingAPI.services;
 
+import com.legacybanking.legacyBankingAPI.Repos.ConfirmationTokenRepo;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRepo;
 import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
+import com.legacybanking.legacyBankingAPI.models.VerificationToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -13,8 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 
 @Service
@@ -26,7 +30,10 @@ public class CustomerService {
        private final static String USER_NOT_FOUND = "invalid email or password";
        @Autowired
        private final CustomerRepo customerRepo;
+       @Autowired
+       private final ConfirmationTokenRepo confirmationTokenRepo;
        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+       private final ConfirmationTokenService confirmationTokenService;
 
        public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
@@ -49,7 +56,8 @@ public class CustomerService {
 //       }
 
 
-       public boolean signUpCustomer(@NotNull CustomerModel customerModel){
+       public String signUpCustomer(@NotNull CustomerModel customerModel){
+           String token = UUID.randomUUID().toString();
            boolean usedEmail = customerRepo.findByEmail(customerModel.getEmail()).isPresent();
            int random1 = (int)(Math.random()*(99999 - 10000 +1)+ 10000);
            int random2 = (int)(Math.random()*(99999 - 10000 +1)+ 10000);
@@ -57,7 +65,6 @@ public class CustomerService {
            Integer cvc = new Random().nextInt(1000);
            String accountNumber = "1200" + random1;
            String routingNumber = "0533" + random2;
-
            if(usedEmail){
                throw new IllegalStateException("Email is taken");
            }
@@ -88,6 +95,23 @@ public class CustomerService {
                    CustomerRole.USER
            );
            customerRepo.save(customer);
-           return true;
+           VerificationToken verificationToken = new VerificationToken(
+                   token,
+                   LocalDateTime.now(),
+                   LocalDateTime.now().plusMinutes(16),
+                    customer
+                   );
+           confirmationTokenService.saveToken(verificationToken);
+
+           return token;
        }
+
+    public boolean confirmAccount(VerificationToken VT) {
+        VT.setConfirmedAt(LocalDateTime.now());
+        VT.getCustomer().setLocked(false);
+        VT.getCustomer().setEnabled(true);
+        customerRepo.save(VT.getCustomer());
+        confirmationTokenRepo.save(VT);
+        return true;
+    }
 }

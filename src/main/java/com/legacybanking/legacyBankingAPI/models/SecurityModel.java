@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SecurityModel {
+    private String confirmationToken;
     private boolean lockedCard;
     private boolean lockedAccount;
     private String accountNumber;
