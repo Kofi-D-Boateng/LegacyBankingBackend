@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -187,6 +188,7 @@ public class TransactionService {
             branchRepo.save(branch);
             bankRepo.save(bank);
             customerRepo.save(customer);
+
             return true;
         }
         if(transaction.getType().equals(DEPOSIT)){
@@ -214,7 +216,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public boolean accountTransfer(TransactionModel transaction){
+    public TransactionNotification accountTransfer(TransactionModel transaction){
         List<Bank> bank = bankRepo.findAll();
         List<Branch> branches = branchRepo.findAll();
         Customer customer = customerRepo.findByAccountNumber(transaction.getAccountNumber());
@@ -224,7 +226,7 @@ public class TransactionService {
 
         if(!customer.getEnabled() || customer.getLocked()){
             log.info("Faulty transaction attempted at this time:{}",timestamp);
-            return false;
+            return new TransactionNotification();
         }
 
 
@@ -260,7 +262,14 @@ public class TransactionService {
                 ));
                 customerRepo.save(customer);
                 bankRepo.save(bank.get(0));
-                return true;
+                return new TransactionNotification(
+                        customer.getEmail(),
+                        transaction.getType(),
+                        LocalDateTime.now(),
+                        transaction.getAmount(),
+                        transaction.getEmailOfTransferee(),
+                        customer.getFirstName() + " " + customer.getLastName()
+                );
             }else{
                 log.info("TRANSFEE:{}",transferee.get());
                 transaction.setIsTransferringToOutsideBank(false);
@@ -280,7 +289,14 @@ public class TransactionService {
                         transaction.getDateOfTransaction()
                 ));
                 customerRepo.saveAll(List.of(customer,transferee.get()));
-                return true;
+                return new TransactionNotification(
+                        customer.getEmail(),
+                        transaction.getType(),
+                        LocalDateTime.now(),
+                        transaction.getAmount(),
+                        transferee.get().getFirstName() + " " + transferee.get().getLastName(),
+                        customer.getFirstName() + " " + customer.getLastName()
+                );
             }
         }
 
@@ -296,7 +312,14 @@ public class TransactionService {
                     transaction.getDateOfTransaction()
             ));
             customerRepo.save(customer);
-            return true;
+            return new TransactionNotification(
+                    customer.getEmail(),
+                    transaction.getType(),
+                    LocalDateTime.now(),
+                    transaction.getAmount(),
+                    transaction.getLocation(),
+                    customer.getFirstName() + " " + customer.getLastName()
+            );
         }
 
         if(transaction.getType().equals(ACHCREDIT)){
@@ -315,8 +338,15 @@ public class TransactionService {
             customerRepo.save(customer);
             bankRepo.save(bank.get(0));
 
-            return true;
+            return new TransactionNotification(
+                    customer.getEmail(),
+                    transaction.getType(),
+                    LocalDateTime.now(),
+                    transaction.getAmount(),
+                    customer.getFirstName() + " " + customer.getLastName(),
+                    transaction.getLocation()
+            );
         }
-        return false;
+        return new TransactionNotification();
     }
 }

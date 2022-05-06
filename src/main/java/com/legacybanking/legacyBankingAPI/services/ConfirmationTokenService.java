@@ -27,7 +27,7 @@ public class ConfirmationTokenService implements ConfirmationTokenInterface {
 
     @Override
     @Transactional
-    public void removeTokenFromDB(String token) {
-        tokenRepo.removeToken(token);
+    public void removeTokenFromDB(VerificationToken token) {
+        tokenRepo.delete(token);
     }
 }

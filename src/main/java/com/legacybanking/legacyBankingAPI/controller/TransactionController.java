@@ -2,6 +2,7 @@ package com.legacybanking.legacyBankingAPI.controller;
 
 
 import com.legacybanking.legacyBankingAPI.models.TransactionModel;
+import com.legacybanking.legacyBankingAPI.models.TransactionNotification;
 import com.legacybanking.legacyBankingAPI.services.TransactionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +42,7 @@ public class TransactionController {
     }
 
     @PostMapping("/account-transfer")
-    public String accountTransfer(@RequestBody TransactionModel transaction) {
-        boolean result = transactionService.accountTransfer(transaction);
-        if(!result){
-            return DECLINED;
-        }
-        return ACCEPTED;
+    public TransactionNotification accountTransfer(@RequestBody TransactionModel transaction) {
+       return transactionService.accountTransfer(transaction);
     }
 }

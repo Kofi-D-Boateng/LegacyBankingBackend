@@ -107,11 +107,12 @@ public class CustomerService {
        }
 
     public boolean confirmAccount(VerificationToken VT) {
-        VT.setConfirmedAt(LocalDateTime.now());
-        VT.getCustomer().setLocked(false);
-        VT.getCustomer().setEnabled(true);
-        customerRepo.save(VT.getCustomer());
-        confirmationTokenRepo.save(VT);
-        return true;
+           Customer customer = customerRepo.findByAccountNumber(VT.getCustomer().getAccountNumber());
+           customer.setEnabled(false);
+           customer.setEnabled(true);
+           VT.setConfirmedAt(LocalDateTime.now());
+           customerRepo.save(customer);
+           confirmationTokenRepo.save(VT);
+           return true;
     }
 }
