@@ -2,12 +2,9 @@ package com.legacybanking.legacyBankingAPI.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table

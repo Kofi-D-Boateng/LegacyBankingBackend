@@ -1,6 +1,5 @@
 package com.legacybanking.legacyBankingAPI.security.securityConfig;
 
-import com.legacybanking.legacyBankingAPI.security.jwt.JWTTokenGeneratorFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,11 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 
@@ -21,54 +17,21 @@ import java.util.Collections;
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-//    WE ARE USING A DIFFERENT TYPE OF AUTHENTICATION FOR FRONT END USERS
-
-
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-//    private final UserDetailsService userDetailsService;
-//    private final CustomerService customerService;
-//
-//    @Autowired
-//    public AppSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, CustomerService customerService){
-//        this.userDetailsService = userDetailsService;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-//        this.customerService = customerService;
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder);
-//    }
-//
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        JWTTokenGeneratorFilter jwtTokenGeneratorFilter = new JWTTokenGeneratorFilter(authenticationManager());
-        jwtTokenGeneratorFilter.setFilterProcessesUrl("/api/v1/authentication/login");
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .cors().configurationSource(new CorsConfigurationSource() {
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:8081"));
-                        config.setAllowedMethods(Collections.singletonList("*"));
-                        config.setAllowCredentials(true);
-                        config.setAllowedHeaders(Collections.singletonList("*"));
-                        config.setExposedHeaders(Arrays.asList("Authorization"));
-                        config.setMaxAge(3600L);
-                        return config;
-                    }
+                .cors().configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Collections.singletonList("*"));
+                    config.setAllowedMethods(Collections.singletonList("*"));
+                    config.setAllowCredentials(true);
+                    config.setAllowedHeaders(Collections.singletonList("*"));
+                    config.setExposedHeaders(List.of("Authorization"));
+                    config.setMaxAge(3600L);
+                    return config;
                 }) .and()
                 .csrf().disable()
-//                .addFilterBefore(new JwtVerifierFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilter(jwtTokenGeneratorFilter)
                 .authorizeRequests()
                 .antMatchers("/api/v1/authentication/**").permitAll()
                 .antMatchers("/api/v1/bank/**").permitAll()
