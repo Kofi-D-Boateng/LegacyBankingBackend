@@ -268,7 +268,8 @@ public class TransactionService {
                         LocalDateTime.now(),
                         transaction.getAmount(),
                         transaction.getEmailOfTransferee(),
-                        customer.getFirstName() + " " + customer.getLastName()
+                        customer.getFirstName() + " " + customer.getLastName(),
+                        false
                 );
             }else{
                 log.info("TRANSFEE:{}",transferee.get());
@@ -294,8 +295,10 @@ public class TransactionService {
                         transaction.getType(),
                         LocalDateTime.now(),
                         transaction.getAmount(),
+                        transferee.get().getEmail(),
                         transferee.get().getFirstName() + " " + transferee.get().getLastName(),
-                        customer.getFirstName() + " " + customer.getLastName()
+                        customer.getFirstName() + " " + customer.getLastName(),
+                        true
                 );
             }
         }
@@ -318,7 +321,8 @@ public class TransactionService {
                     LocalDateTime.now(),
                     transaction.getAmount(),
                     transaction.getLocation(),
-                    customer.getFirstName() + " " + customer.getLastName()
+                    customer.getFirstName() + " " + customer.getLastName(),
+                    false
             );
         }
 
@@ -344,7 +348,8 @@ public class TransactionService {
                     LocalDateTime.now(),
                     transaction.getAmount(),
                     customer.getFirstName() + " " + customer.getLastName(),
-                    transaction.getLocation()
+                    transaction.getLocation(),
+                    false
             );
         }
         return new TransactionNotification();
