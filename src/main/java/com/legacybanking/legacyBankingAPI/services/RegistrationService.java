@@ -41,4 +41,8 @@ public class RegistrationService {
 
         return customerService.confirmAccount(VT);
     }
+
+    public String generateToken(String email) {
+        return customerService.generateToken(email);
+    }
 }
