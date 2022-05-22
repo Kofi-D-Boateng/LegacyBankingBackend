@@ -115,4 +115,21 @@ public class CustomerService {
            confirmationTokenRepo.save(VT);
            return true;
     }
+
+    public String generateToken(String email) {
+           String token = UUID.randomUUID().toString();
+           Optional<Customer> customer = customerRepo.findByEmail(email);
+           if(customer.isEmpty()){
+               return "";
+           }
+           VerificationToken verificationToken = new VerificationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(16),
+                customer.get()
+           );
+           confirmationTokenService.saveToken(verificationToken);
+
+           return token;
+    }
 }

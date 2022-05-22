@@ -29,7 +29,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public Customer login(@RequestBody CustomerModel customerModel) throws UsernameNotFoundException {
-        log.info("Logging in user:{}",customerModel);
         return loginService.loginUser(customerModel);
 
     }
@@ -38,5 +37,10 @@ public class AuthController {
     public boolean verifyAccount(@RequestBody @NotNull SecurityModel security){
         log.info("SECURITY CHECK: {}",security.getConfirmationToken());
         return registrationService.verifyAccount(security);
+    }
+
+    @GetMapping("/get-new-token")
+    public String generateToken(@RequestParam String email){
+        return registrationService.generateToken(email);
     }
 }
