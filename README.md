@@ -1,10 +1,10 @@
 ﻿# LegacyBankingBackend
  
- ## Project
- Get hands on experiences working with programming in Java, while also acquire knowledge of how java works with microservices, docker, and frameworks such as Spring.
+## Project
+A banking backend that will be used to centeralize the connection between our assets and the different endpoints we have scattered across the globe. This source code is the connection to our banking assets that will be able in cloud using Amazon AWS techonology. 
 
 ## Purpose
-A banking backend that will be used to centeralize the connection between our assets and the different endpoints we have scattered across the globe. This source code is the connection to our banking assets that will be able in cloud using Amazon AWS techonology. 
+Get hands on experiences working with programming in Java, while also acquire knowledge of how java works with microservices, docker, and frameworks such as Spring. 
 
 ## Source code used
 - Java JDK 17 (compatible with amazoncoretto, openJDK, etc)
