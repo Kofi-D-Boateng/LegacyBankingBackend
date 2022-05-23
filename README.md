@@ -1,4 +1,4 @@
-﻿# LegacyBankingBackend
+﻿# Legacy Banking Java Backend microservice
  
 ## Project
 A banking backend that will be used to centeralize the connection between our assets and the different endpoints we have scattered across the globe. This source code is the connection to our banking assets that will be able in cloud using Amazon AWS techonology. 
