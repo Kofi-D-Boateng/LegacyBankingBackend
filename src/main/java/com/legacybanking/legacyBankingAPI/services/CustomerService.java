@@ -108,7 +108,7 @@ public class CustomerService {
 
     public boolean confirmAccount(VerificationToken VT) {
            Customer customer = customerRepo.findByAccountNumber(VT.getCustomer().getAccountNumber());
-           customer.setEnabled(false);
+           customer.setLocked(false);
            customer.setEnabled(true);
            VT.setConfirmedAt(LocalDateTime.now());
            customerRepo.save(customer);
