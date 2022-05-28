@@ -224,7 +224,7 @@ public class TransactionService {
         log.info("TRANSACTION: {}", transaction);
         log.info("CUSTOMER: {}",customer);
 
-        if(!customer.getEnabled()){
+        if(!customer.getEnabled() || customer.getLocked()){
             log.info("Faulty transaction attempted at this time:{}",timestamp);
             return new TransactionNotification();
         }
