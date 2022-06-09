@@ -15,7 +15,7 @@ public class TransactionNotification {
     private String receiverEmail;
     private String receiver;
     private String sender;
-    private boolean isUserInDatabase;
+    private boolean isReceiverInDatabase;
 
     public TransactionNotification(String email, String type, LocalDateTime localDateTime, Double amount) {
         this.email = email;
@@ -24,14 +24,14 @@ public class TransactionNotification {
         this.amount = amount;
     }
 
-    public TransactionNotification(String email, String type, LocalDateTime localDateTime, Double amount, String receiver, String sender, boolean isUserInDatabase) {
+    public TransactionNotification(String email, String type, LocalDateTime localDateTime, Double amount, String receiver, String sender, boolean isReceiverInDatabase) {
         this.email = email;
         this.type = type;
         this.localDateTime = localDateTime;
         this.amount = amount;
         this.receiver = receiver;
         this.sender = sender;
-        this.isUserInDatabase = isUserInDatabase;
+        this.isReceiverInDatabase = isReceiverInDatabase;
     }
 }
 
