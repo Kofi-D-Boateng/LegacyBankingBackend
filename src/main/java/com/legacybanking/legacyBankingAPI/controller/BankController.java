@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/bank/")
 public class BankController {
 
+    @Autowired
     private final BankService bankService;
 
     @Autowired
