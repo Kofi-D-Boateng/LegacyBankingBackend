@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table
@@ -20,15 +19,6 @@ public class Branch {
     private String country;
     private String state;
     private String zipcode;
-    @Column(name = "branch_customers")
-    @OneToMany
-    @JoinTable(
-            name = "branch_customer",
-            joinColumns = @JoinColumn(name = "branch_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    )
-    @ToString.Exclude
-    private List<Customer> branchCustomers;
     @ManyToOne
     @JoinColumn(name = "bank_id")
     @JsonBackReference

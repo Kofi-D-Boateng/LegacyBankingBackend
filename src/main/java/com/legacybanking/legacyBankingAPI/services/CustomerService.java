@@ -6,6 +6,7 @@ import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -22,18 +23,21 @@ import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 @Slf4j
 public class CustomerService {
 
        private final static String USER_NOT_FOUND = "invalid email or password";
-       @Autowired
-       private final CustomerRepo customerRepo;
-       @Autowired
-       private final ConfirmationTokenRepo confirmationTokenRepo;
-       private final BCryptPasswordEncoder bCryptPasswordEncoder;
-       private final ConfirmationTokenService confirmationTokenService;
+
+        @Autowired
+        private final CustomerRepo customerRepo;
+        @Autowired
+        private final ConfirmationTokenRepo confirmationTokenRepo;
+        @Autowired
+        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+        @Autowired
+        private final ConfirmationTokenService confirmationTokenService;
 
        public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
@@ -49,11 +53,6 @@ public class CustomerService {
                throw new UsernameNotFoundException(USER_NOT_FOUND);
            });
        }
-
-//       @Override
-//       public Customer loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//       }
 
 
        public String signUpCustomer(@NotNull CustomerModel customerModel){

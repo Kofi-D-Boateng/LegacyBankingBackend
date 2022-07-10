@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Table(
         name = "bank"
-
 )
 public class Bank  {
     @Id

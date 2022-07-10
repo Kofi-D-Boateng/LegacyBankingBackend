@@ -6,6 +6,7 @@ import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.SecurityModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
+    @Autowired
     private final CustomerService customerService;
+    @Autowired
     private final ConfirmationTokenService confirmationTokenService;
 
     public String register(CustomerModel customerModel) {

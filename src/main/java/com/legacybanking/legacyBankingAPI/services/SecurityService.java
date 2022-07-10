@@ -19,14 +19,9 @@ public class SecurityService {
         if(security.isLockedCard()){
             customer.setCardNumber(null);
             customer.setLocked(security.isLockedCard());
-            customerRepo.save(customer);
-            return true;
         }
-        if(security.isLockedAccount()){
-            customer.setEnabled(false);
-            customerRepo.save(customer);
-            return true;
-        }
-        return false;
+        customer.setEnabled(security.isLockedAccount());
+        customerRepo.save(customer);
+        return true;
     }
 }

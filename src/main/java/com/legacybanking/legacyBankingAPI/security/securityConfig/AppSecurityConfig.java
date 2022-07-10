@@ -25,7 +25,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Collections.singletonList("*"));
                     config.setAllowedMethods(Collections.singletonList("*"));
-                    config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
                     config.setExposedHeaders(List.of("Authorization"));
                     config.setMaxAge(3600L);
