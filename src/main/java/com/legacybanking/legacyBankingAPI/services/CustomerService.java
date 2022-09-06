@@ -7,7 +7,6 @@ import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,9 @@ public class CustomerService {
         @Autowired
         private final CustomerRepo customerRepo;
         @Autowired
-        private final ConfirmationTokenRepo confirmationTokenRepo;
+        private final ConfirmationTokenRepo tokenRepo;
         @Autowired
         private final BCryptPasswordEncoder bCryptPasswordEncoder;
-        @Autowired
-        private final ConfirmationTokenService confirmationTokenService;
 
        public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
@@ -100,7 +97,8 @@ public class CustomerService {
                    LocalDateTime.now().plusMinutes(16),
                     customer
                    );
-           confirmationTokenService.saveToken(verificationToken);
+
+           tokenRepo.save(verificationToken);
 
            return token;
        }
@@ -111,7 +109,7 @@ public class CustomerService {
            customer.setEnabled(true);
            VT.setConfirmedAt(LocalDateTime.now());
            customerRepo.save(customer);
-           confirmationTokenRepo.save(VT);
+           tokenRepo.save(VT);
            return true;
     }
 
@@ -127,7 +125,7 @@ public class CustomerService {
                 LocalDateTime.now().plusMinutes(16),
                 customer.get()
            );
-           confirmationTokenService.saveToken(verificationToken);
+           tokenRepo.save(verificationToken);
 
            return token;
     }
