@@ -3,7 +3,7 @@ package com.legacybanking.legacyBankingAPI.controller;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.SecurityModel;
-import com.legacybanking.legacyBankingAPI.services.LoginService;
+import com.legacybanking.legacyBankingAPI.services.CustomerService;
 import com.legacybanking.legacyBankingAPI.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AuthController {
     @Autowired
-    private LoginService loginService;
+    private CustomerService customerService;
     @Autowired
     private RegistrationService registrationService;
 
@@ -29,7 +29,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public Customer login(@RequestBody CustomerModel customerModel) throws UsernameNotFoundException {
-        return loginService.loginUser(customerModel);
+        return customerService.loginUser(customerModel.getEmail());
 
     }
 
