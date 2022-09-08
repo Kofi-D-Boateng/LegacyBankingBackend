@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-@Transactional()
+@Transactional(readOnly = false)
 public interface CustomerRepo extends JpaRepository<Customer,Long> {
     Optional<Customer> findByEmail(String email);
     @Query("select c from Customer c where c.phoneNumber = ?1")

@@ -6,9 +6,7 @@ import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +20,6 @@ import java.util.UUID;
 
 
 @Service
-@AllArgsConstructor
 @Transactional
 @Slf4j
 public class CustomerService {
@@ -30,11 +27,11 @@ public class CustomerService {
        private final static String USER_NOT_FOUND = "invalid email or password";
 
         @Autowired
-        private final CustomerRepo customerRepo;
+        private CustomerRepo customerRepo;
         @Autowired
-        private final ConfirmationTokenRepo tokenRepo;
+        private ConfirmationTokenRepo tokenRepo;
         @Autowired
-        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+        private BCryptPasswordEncoder bCryptPasswordEncoder;
 
        public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);
@@ -52,7 +49,7 @@ public class CustomerService {
        }
 
 
-       public String signUpCustomer(@NotNull CustomerModel customerModel){
+       public String signUpCustomer(CustomerModel customerModel){
            String token = UUID.randomUUID().toString();
            boolean usedEmail = customerRepo.findByEmail(customerModel.getEmail()).isPresent();
            int random1 = (int)(Math.random()*(99999 - 10000 +1)+ 10000);

@@ -22,18 +22,17 @@ import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class TransactionService {
     @Autowired
-    TransactionRepo transactionRepo;
+    private TransactionRepo transactionRepo;
     @Autowired
-    CustomerRepo customerRepo;
+    private CustomerRepo customerRepo;
     @Autowired
-    BranchRepo branchRepo;
+    private BranchRepo branchRepo;
     @Autowired
-    BankRepo bankRepo;
+    private BankRepo bankRepo;
     private static final String DEPOSIT = "deposit";
     private static final String WITHDRAWAL = "withdrawal";
     private static final String ACHDEBIT = "ACH Debit";
