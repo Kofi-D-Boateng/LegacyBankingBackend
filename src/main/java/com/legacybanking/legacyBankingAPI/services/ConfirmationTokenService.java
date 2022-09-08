@@ -16,11 +16,7 @@ public class ConfirmationTokenService implements ConfirmationTokenInterface {
     @Autowired
     public final ConfirmationTokenRepo tokenRepo;
 
-    @Override
-    @Transactional
-    public void saveToken(VerificationToken token){
-        tokenRepo.save(token);
-    }
+
 
     @Override
     public VerificationToken retrieveToken(String token){
