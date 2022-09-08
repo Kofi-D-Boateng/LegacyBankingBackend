@@ -6,7 +6,6 @@ import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
