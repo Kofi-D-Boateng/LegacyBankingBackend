@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EntityScan(basePackages = "com")
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {"com.legacybanking.legacyBankingAPI"})
 @EnableJpaRepositories("com.legacybanking.legacyBankingAPI.Repos")
 public class LegacyBankingApiApplication {
 
