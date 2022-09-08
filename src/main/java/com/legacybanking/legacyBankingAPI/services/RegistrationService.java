@@ -17,12 +17,12 @@ public class RegistrationService {
     @Autowired
     private  ConfirmationTokenService confirmationTokenService;
 
-    public String register(CustomerModel customerModel) {
-        String validEmail = customerModel.getEmail();
-        if(validEmail == null){
+    public String register(CustomerModel customer) {
+
+        if(customer.getEmail().trim().length() == 0 || customer.getPassword().trim().length() == 0){
             return "";
         }else{
-            return customerService.signUpCustomer(customerModel);
+            return customerService.signUpCustomer(customer);
         }
     }
 
