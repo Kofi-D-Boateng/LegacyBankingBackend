@@ -21,7 +21,6 @@ import java.util.UUID;
 
 
 @Service
-@AllArgsConstructor
 @Transactional
 @Slf4j
 public class CustomerService {
@@ -29,11 +28,11 @@ public class CustomerService {
        private final static String USER_NOT_FOUND = "invalid email or password";
 
         @Autowired
-        private final CustomerRepo customerRepo;
+        private CustomerRepo customerRepo;
         @Autowired
-        private final ConfirmationTokenRepo tokenRepo;
+        private ConfirmationTokenRepo tokenRepo;
         @Autowired
-        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+        private BCryptPasswordEncoder bCryptPasswordEncoder;
 
        public Customer getCustomerInfo(String username) throws UsernameNotFoundException{
            Optional<Customer> customer = customerRepo.findByEmail(username);

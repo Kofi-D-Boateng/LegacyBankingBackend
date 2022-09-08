@@ -1,24 +1,21 @@
 package com.legacybanking.legacyBankingAPI.services;
 
-import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
-import com.legacybanking.legacyBankingAPI.models.Customer;
+
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.SecurityModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
 public class RegistrationService {
 
     @Autowired
-    private final CustomerService customerService;
+    private  CustomerService customerService;
     @Autowired
-    private final ConfirmationTokenService confirmationTokenService;
+    private  ConfirmationTokenService confirmationTokenService;
 
     public String register(CustomerModel customerModel) {
         String validEmail = customerModel.getEmail();

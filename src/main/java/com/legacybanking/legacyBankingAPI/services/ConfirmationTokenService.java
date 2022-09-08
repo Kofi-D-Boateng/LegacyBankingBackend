@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@AllArgsConstructor
 public class ConfirmationTokenService implements ConfirmationTokenInterface {
 
     @Autowired
-    public final ConfirmationTokenRepo tokenRepo;
+    public ConfirmationTokenRepo tokenRepo;
 
 
 
