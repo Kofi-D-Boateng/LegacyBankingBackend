@@ -7,9 +7,7 @@ import com.legacybanking.legacyBankingAPI.models.Customer;
 import com.legacybanking.legacyBankingAPI.models.CustomerModel;
 import com.legacybanking.legacyBankingAPI.models.VerificationToken;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +21,7 @@ import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 @Slf4j
 public class CustomerService {
@@ -53,7 +51,7 @@ public class CustomerService {
        }
 
 
-       public String signUpCustomer(@NotNull CustomerModel customerModel){
+       public String signUpCustomer(CustomerModel customerModel){
            String token = UUID.randomUUID().toString();
            boolean usedEmail = customerRepo.findByEmail(customerModel.getEmail()).isPresent();
            int random1 = (int)(Math.random()*(99999 - 10000 +1)+ 10000);
