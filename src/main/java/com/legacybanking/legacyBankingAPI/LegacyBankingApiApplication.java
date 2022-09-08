@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
+@EnableJpaRepositories("com.legacybanking.legacyBankingAPI.Repos")
+
 public class LegacyBankingApiApplication {
 
 	public static void main(String[] args) {
