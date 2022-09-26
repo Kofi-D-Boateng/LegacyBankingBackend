@@ -78,7 +78,7 @@ public class TransactionService {
             return false;
         }
 
-        if(transaction.getExpirationDate().isAfter(currentDate)){
+        if(transaction.getExpirationDate().isBefore(currentDate)){
             log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,transaction.getLocation());
             return false;
         }
@@ -161,7 +161,7 @@ public class TransactionService {
             return false;
         }
 
-        if(transaction.getExpirationDate().isAfter(currentDate)){
+        if(transaction.getExpirationDate().isBefore(currentDate)){
             log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,transaction.getLocation());
             return false;
         }
