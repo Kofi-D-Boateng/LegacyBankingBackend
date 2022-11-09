@@ -1,8 +1,8 @@
 package com.legacybanking.legacyBankingAPI.services;
 
-import com.legacybanking.legacyBankingAPI.Repos.ConfirmationTokenRepo;
-import com.legacybanking.legacyBankingAPI.models.Customer;
-import com.legacybanking.legacyBankingAPI.models.VerificationToken;
+import com.legacybanking.legacyBankingAPI.repos.tokenRepo.ConfirmationTokenRepo;
+import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.securityAndTokens.VerificationToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
