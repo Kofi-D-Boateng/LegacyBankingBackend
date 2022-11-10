@@ -26,7 +26,7 @@ public class TransactionController {
     private final static String DECLINED = "APPROVED";
     private final static String ACCEPTED = "DENIED";
     @PutMapping("vendor-transaction")
-    public String vendorTransaction(VendorTransactionRequest vendorTransaction) throws RuntimeException{
+    public String vendorTransaction(@RequestBody VendorTransactionRequest vendorTransaction) throws RuntimeException{
 
         boolean result = transactionService.vendorTransaction(vendorTransaction);
         return result ? ACCEPTED : DECLINED;
@@ -39,7 +39,8 @@ public class TransactionController {
     }
 
     @PutMapping("account-transfer")
-    public TransactionNotification accountTransfer(AccountTransferRequest transaction) {
+    public TransactionNotification accountTransfer(@RequestBody AccountTransferRequest transaction) {
+        log.info("TRANSACTION: {}",transaction);
        return transactionService.accountTransfer(transaction);
     }
 }

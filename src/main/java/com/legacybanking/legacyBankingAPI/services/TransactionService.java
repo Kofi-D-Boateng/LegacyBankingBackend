@@ -127,7 +127,7 @@ public class TransactionService {
                             request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
                     vendorTransactionRepo.save(transaction);
-                    customerRepo.save(customer.get());
+                    creditAccountRepo.save(customerAccount);
                     return true;
                 }else if(request.getTransactionType().equals(TransactionType.PURCHASE)){
 
@@ -142,7 +142,7 @@ public class TransactionService {
                             request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
                     vendorTransactionRepo.save(transaction);
-                    customerRepo.save(customer.get());
+                    creditAccountRepo.save(customerAccount);
                     return true;
                 }
             }
@@ -193,7 +193,7 @@ public class TransactionService {
                             request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
                     vendorTransactionRepo.save(transaction);
-                    customerRepo.save(customer.get());
+                    checkingAccountRepo.save(customerAccount);
                     return true;
                 }else if(request.getTransactionType().equals(TransactionType.PURCHASE)){
                     customerAccount.setCapital(customerAccount.getCapital() - request.getAmount());
@@ -202,7 +202,7 @@ public class TransactionService {
                             request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
                     vendorTransactionRepo.save(transaction);
-                    customerRepo.save(customer.get());
+                    checkingAccountRepo.save(customerAccount);
                     return true;
                 }
             }
