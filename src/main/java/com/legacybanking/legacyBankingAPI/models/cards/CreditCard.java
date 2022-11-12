@@ -1,8 +1,8 @@
 package com.legacybanking.legacyBankingAPI.models.cards;
 
+import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Card;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.enums.CreditCardType;
 import com.legacybanking.legacyBankingAPI.models.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +21,9 @@ import java.time.LocalDateTime;
 public class CreditCard extends Card {
     @Column(name = "credit_card_type",
     nullable = false)
-    private CreditCardType creditCardType;
-    public CreditCard(String cardNumber, String cardVerificationCode, LocalDateTime expirationDate, Customer customer, Boolean isLocked, CardType type, CreditCardType creditCardType) {
+    private CreditType creditType;
+    public CreditCard(String cardNumber, String cardVerificationCode, LocalDateTime expirationDate, Customer customer, Boolean isLocked, CardType type, CreditType creditType) {
         super(cardNumber, cardVerificationCode, expirationDate, customer, isLocked, type);
-        this.creditCardType = creditCardType;
+        this.creditType = creditType;
     }
 }

@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SecurityModel {
     private String confirmationToken;
-    private boolean lockedCard;
-    private boolean lockedAccount;
     private String accountNumber;
+    private String cardNumber;
+    private String requestType;
+    private String email;
 }

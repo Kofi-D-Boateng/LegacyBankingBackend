@@ -2,10 +2,9 @@ package com.legacybanking.legacyBankingAPI.models.customer;
 
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.enums.CreditCardType;
+import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
@@ -27,7 +26,7 @@ public class Registration {
     private Long phoneNumber;
     private BankAccountType bankAccountType;
     private CardType cardType;
-    private CreditCardType creditCardType;
+    private CreditType creditType;
     private Long customerPin;
     private Double annualPercentageRate;
     private Double interestRate;

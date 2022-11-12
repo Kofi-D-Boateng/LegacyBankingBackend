@@ -56,7 +56,7 @@ public abstract class Account {
 
     @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "card_number")
+    @JoinColumn(name = "card_id")
     Card card;
 
     @Column(

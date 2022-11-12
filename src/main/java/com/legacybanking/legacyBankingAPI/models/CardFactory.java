@@ -1,8 +1,8 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Card;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.enums.CreditCardType;
 import com.legacybanking.legacyBankingAPI.models.cards.CreditCard;
 import com.legacybanking.legacyBankingAPI.models.cards.DebitCard;
 import com.legacybanking.legacyBankingAPI.models.customer.Customer;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 
 public class CardFactory {
-    public Card createCard(CardType type, CreditCardType creditCardType, Customer customer){
+    public Card createCard(CardType type, CreditType creditCardType, Customer customer){
         LocalDateTime dateTime = LocalDateTime.now();
         if(type == null) return null;
 

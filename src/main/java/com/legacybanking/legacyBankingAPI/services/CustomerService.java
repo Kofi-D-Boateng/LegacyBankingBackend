@@ -2,7 +2,7 @@ package com.legacybanking.legacyBankingAPI.services;
 
 import com.legacybanking.legacyBankingAPI.Interfaces.CustomerServices;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.enums.CreditCardType;
+import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.enums.CustomerRole;
 import com.legacybanking.legacyBankingAPI.models.AccountFactory;
 import com.legacybanking.legacyBankingAPI.models.CardFactory;
@@ -143,7 +143,7 @@ public class CustomerService implements CustomerServices {
             AccountFactory accountFactory = new AccountFactory();
             CardFactory cardFactory = new CardFactory();
             CheckingAccount checkingAccount = (CheckingAccount) accountFactory.createAccount(model.getBankAccountType(),customer.get(),
-                    null,null,null,model.getMinimumBalanceAllowed());
+                    null,null,null,model.getMinimumBalanceAllowed(),null);
             DebitCard debitCard = (DebitCard) cardFactory.createCard(CardType.DEBIT,null,customer.get());
 
 
@@ -176,18 +176,18 @@ public class CustomerService implements CustomerServices {
             AccountFactory accountFactory = new AccountFactory();
             CardFactory cardFactory = new CardFactory();
             CreditAccount creditAccount = (CreditAccount) accountFactory.createAccount(model.getBankAccountType(),customer.get(),null,null,
-                    model.getAnnualPercentageRate(),null);
-            CreditCard creditCard = (CreditCard) cardFactory.createCard(CardType.CREDIT,model.getCreditCardType(),customer.get());
+                    model.getAnnualPercentageRate(),null,model.getCreditType());
+            CreditCard creditCard = (CreditCard) cardFactory.createCard(CardType.CREDIT,model.getCreditType(),customer.get());
 
-            if(creditCard.getCreditCardType().equals(CreditCardType.EMERALD)){
+            if(creditCard.getCreditType().equals(CreditType.EMERALD)){
                 creditAccount.setCard(creditCard);
                 creditCard.setAccount(creditAccount);
                 creditAccount.setCapital(EMERALD_CREDIT_LINE);
-            }else if(creditCard.getCreditCardType().equals(CreditCardType.BLACK)){
+            }else if(creditCard.getCreditType().equals(CreditType.BLACK)){
                 creditAccount.setCard(creditCard);
                 creditCard.setAccount(creditAccount);
                 creditAccount.setCapital(BLACK_CREDIT_LINE);
-            }else if(creditCard.getCreditCardType().equals(CreditCardType.PLATINUM)){
+            }else if(creditCard.getCreditType().equals(CreditType.PLATINUM)){
                 creditAccount.setCard(creditCard);
                 creditCard.setAccount(creditAccount);
                 creditAccount.setCapital(PLATINUM_CREDIT_LINE);
@@ -220,7 +220,7 @@ public class CustomerService implements CustomerServices {
             AccountFactory accountFactory = new AccountFactory();
             CardFactory cardFactory = new CardFactory();
            SavingsAccount savingsAccount = (SavingsAccount) accountFactory.createAccount(model.getBankAccountType(),customer.get(),
-                   model.getInterestRate(),model.getMaxAllowedContribution(),null,null);
+                   model.getInterestRate(),model.getMaxAllowedContribution(),null,null,null);
 
 
             savingsAccount.setCard(null);

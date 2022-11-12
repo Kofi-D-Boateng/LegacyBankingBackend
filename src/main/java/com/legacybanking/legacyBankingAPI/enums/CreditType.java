@@ -1,5 +1,5 @@
 package com.legacybanking.legacyBankingAPI.enums;
 
-public enum CreditCardType {
+public enum CreditType {
     BLACK,PLATINUM,EMERALD
 }

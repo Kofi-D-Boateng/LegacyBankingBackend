@@ -1,5 +1,6 @@
 package com.legacybanking.legacyBankingAPI.models;
 
+import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Account;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
@@ -10,7 +11,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class AccountFactory {
-    public Account createAccount(BankAccountType type, Customer customer,Double interestRate, Double maxAllowedContribution,Double annualPercentageRate,Double minimumBalanceAllowed){
+    public Account createAccount(BankAccountType type, Customer customer, Double interestRate, Double maxAllowedContribution, Double annualPercentageRate, Double minimumBalanceAllowed, CreditType creditType){
         if(type == null) return null;
         else if(type.equals(BankAccountType.CHECKING)){
             StringBuilder stringAN = new StringBuilder("1200"), stringRN = new StringBuilder("0533");
@@ -26,7 +27,7 @@ public class AccountFactory {
             int randomRoutingNumber = (int)(Math.random()*(99999 - 10000 +1)+ 10000);
             stringAN.append(randomAccountNumber);
             stringRN.append(randomRoutingNumber);
-            return new CreditAccount(customer,stringAN.toString(),stringRN.toString(),BankAccountType.CREDIT,0.0D,false,annualPercentageRate);
+            return new CreditAccount(customer,stringAN.toString(),stringRN.toString(),BankAccountType.CREDIT,0.0D,false,annualPercentageRate, creditType);
         }
         else if(type.equals(BankAccountType.SAVINGS)) {
             StringBuilder stringAN = new StringBuilder("1200"), stringRN = new StringBuilder("0533");
