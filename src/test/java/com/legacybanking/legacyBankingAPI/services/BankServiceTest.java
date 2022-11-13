@@ -1,8 +1,8 @@
 package com.legacybanking.legacyBankingAPI.services;
 
-import com.legacybanking.legacyBankingAPI.Repos.BankRepo;
-import com.legacybanking.legacyBankingAPI.models.Bank;
-import com.legacybanking.legacyBankingAPI.models.Branch;
+import com.legacybanking.legacyBankingAPI.repos.bankRepos.BankRepo;
+import com.legacybanking.legacyBankingAPI.models.bankEntity.Bank;
+import com.legacybanking.legacyBankingAPI.models.bankEntity.Branch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

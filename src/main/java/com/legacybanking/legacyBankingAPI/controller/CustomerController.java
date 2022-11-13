@@ -1,7 +1,9 @@
 package com.legacybanking.legacyBankingAPI.controller;
 
-import com.legacybanking.legacyBankingAPI.models.Customer;
+import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.securityAndTokens.SecurityModel;
 import com.legacybanking.legacyBankingAPI.services.CustomerService;
+import com.legacybanking.legacyBankingAPI.services.SecurityService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +11,26 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/v1/customer/")
+@RequestMapping(path = "/api/v2/customer/")
 @AllArgsConstructor
 @Slf4j
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private SecurityService securityService;
 
-    @GetMapping("/profile")
+    @GetMapping("profile")
     @ResponseBody
     public Customer getCustomer(@RequestParam String username )throws UsernameNotFoundException {
         log.info("Username: {}", username);
         return customerService.getCustomerInfo(username);
+    }
+
+    @PutMapping("security")
+    public boolean configureSecurity(@RequestBody SecurityModel security){
+        log.info("CONFIG: {}",security);
+        return securityService.setSecurity(security);
     }
 }

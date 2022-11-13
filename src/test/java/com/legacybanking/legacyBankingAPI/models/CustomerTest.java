@@ -1,12 +1,10 @@
 package com.legacybanking.legacyBankingAPI.models;
 
-import com.legacybanking.legacyBankingAPI.Repos.CustomerRole;
+import com.legacybanking.legacyBankingAPI.models.customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,69 +101,69 @@ class CustomerTest {
         assertEquals(password,customer.getPassword());
     }
 
-    @Test
-    void getAccountNumber() {
-        String accountNumber = "password1";
-        customer.setAccountNumber(accountNumber);
-        assertEquals(accountNumber,customer.getAccountNumber());
-    }
-
-    @Test
-    void getRoutingNumber() {
-        String routingNumber = "5000123403";
-        customer.setRoutingNumber(routingNumber);
-        assertEquals(routingNumber,customer.getRoutingNumber());
-    }
-
-    @Test
-    void getCardNumber() {
-        Long cardNumber = 4040182713326754L;
-        customer.setCardNumber(cardNumber);
-        assertEquals(cardNumber,customer.getCardNumber());
-    }
-
-    @Test
-    void getCvc() {
-        Integer cvc = 321;
-        customer.setCvc(cvc);
-        assertEquals(cvc,customer.getCvc());
-    }
-
-    @Test
-    void getLocked() {
-        Boolean isLocked = true;
-        customer.setLocked(isLocked);
-        assertEquals(isLocked,customer.getLocked());
-    }
-
-    @Test
-    void getEnabled() {
-        Boolean isEnabled = true;
-        customer.setEnabled(isEnabled);
-        assertEquals(isEnabled,customer.getEnabled());
-    }
-
-    @Test
-    void getCustomerRole() {
-        CustomerRole role = CustomerRole.USER;
-        customer.setCustomerRole(role);
-        assertEquals(role,customer.getCustomerRole());
-    }
-
-    @Test
-    void getTransactions() {
-        List<Transaction> t = new ArrayList<>();
-        Transaction transaction = new Transaction(
-                1L,
-                15.45,
-                customer,
-                customer.getAccountNumber(),
-                "Some Location",
-                "Account Withdrawal",
-                LocalDate.now()
-        );
-        t.add(transaction);
-        customer.setTransactions(t);
-        assertEquals(t,customer.getTransactions());
-    }
+//    @Test
+//    void getAccountNumber() {
+//        String accountNumber = "password1";
+//        customer.setAccountNumber(accountNumber);
+//        assertEquals(accountNumber,customer.getAccountNumber());
+//    }
+//
+//    @Test
+//    void getRoutingNumber() {
+//        String routingNumber = "5000123403";
+//        customer.setRoutingNumber(routingNumber);
+//        assertEquals(routingNumber,customer.getRoutingNumber());
+//    }
+//
+//    @Test
+//    void getCardNumber() {
+//        Long cardNumber = 4040182713326754L;
+//        customer.setCardNumber(cardNumber);
+//        assertEquals(cardNumber,customer.getCardNumber());
+//    }
+//
+//    @Test
+//    void getCvc() {
+//        Integer cvc = 321;
+//        customer.setCvc(cvc);
+//        assertEquals(cvc,customer.getCvc());
+//    }
+//
+//    @Test
+//    void getLocked() {
+//        Boolean isLocked = true;
+//        customer.setLocked(isLocked);
+//        assertEquals(isLocked,customer.getLocked());
+//    }
+//
+//    @Test
+//    void getEnabled() {
+//        Boolean isEnabled = true;
+//        customer.setEnabled(isEnabled);
+//        assertEquals(isEnabled,customer.getEnabled());
+//    }
+//
+//    @Test
+//    void getCustomerRole() {
+//        CustomerRole role = CustomerRole.USER;
+//        customer.setCustomerRole(role);
+//        assertEquals(role,customer.getCustomerRole());
+//    }
+//
+//    @Test
+//    void getTransactions() {
+//        List<Transaction> t = new ArrayList<>();
+//        Transaction transaction = new Transaction(
+//                1L,
+//                15.45,
+//                customer,
+//                customer.getAccountNumber(),
+//                "Some Location",
+//                "Account Withdrawal",
+//                LocalDate.now()
+//        );
+//        t.add(transaction);
+//        customer.setTransactions(t);
+//        assertEquals(t,customer.getTransactions());
+//    }
 }
