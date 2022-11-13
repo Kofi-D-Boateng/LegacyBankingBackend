@@ -382,7 +382,7 @@ public class TransactionService {
                         request.getTransactionType(),
                         LocalDateTime.now(),
                         request.getAmount(),
-                        request.getEmailOfTransferee(),
+                        "User outside of bank",
                         customer.get().getFirstName() + " " + customer.get().getLastName(),
                         false
                 );

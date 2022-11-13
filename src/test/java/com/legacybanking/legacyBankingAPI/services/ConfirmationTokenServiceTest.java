@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,11 +39,4 @@ class ConfirmationTokenServiceTest {
         assertEquals(verificationToken.getToken(),token.getToken());
     }
 
-//    @Test
-//    void removeTokenFromDB() {
-//        VerificationToken token = new VerificationToken();
-//        doNothing().when(tokenRepo.delete(token));
-//
-//         test = confirmationTokenService.removeTokenFromDB(verificationToken);
-//    }
 }
