@@ -1,8 +1,8 @@
 package com.legacybanking.legacyBankingAPI.services;
 
-import com.legacybanking.legacyBankingAPI.Repos.ConfirmationTokenRepo;
-import com.legacybanking.legacyBankingAPI.models.Customer;
-import com.legacybanking.legacyBankingAPI.models.VerificationToken;
+import com.legacybanking.legacyBankingAPI.repos.tokenRepo.ConfirmationTokenRepo;
+import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.securityAndTokens.VerificationToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,11 +39,4 @@ class ConfirmationTokenServiceTest {
         assertEquals(verificationToken.getToken(),token.getToken());
     }
 
-//    @Test
-//    void removeTokenFromDB() {
-//        VerificationToken token = new VerificationToken();
-//        doNothing().when(tokenRepo.delete(token));
-//
-//         test = confirmationTokenService.removeTokenFromDB(verificationToken);
-//    }
 }

@@ -1,6 +1,6 @@
 package com.legacybanking.legacyBankingAPI.Interfaces;
 
-import com.legacybanking.legacyBankingAPI.models.VerificationToken;
+import com.legacybanking.legacyBankingAPI.models.securityAndTokens.VerificationToken;
 
 public interface ConfirmationTokenInterface {
     VerificationToken retrieveToken(String token);
