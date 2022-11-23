@@ -375,7 +375,7 @@ public class TransactionService {
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
                 accountTransferRepo.save(transfer);
-                customerRepo.save(customer.get());
+                checkingAccountRepo.save(customerAccount);
                 bankRepo.save(bank.get(0));
                 return new TransactionNotification(
                         customer.get().getEmail(),
@@ -388,7 +388,7 @@ public class TransactionService {
                 );
             }else{
                 String message = "Debit transfer to " + transferee.get().getFirstName()  + " " + transferee.get().getLastName();
-                Account transfereeAccount = (Account) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING));
+                CheckingAccount transfereeAccount = (CheckingAccount) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING));
 
                 transfereeAccount.setCapital( transfereeAccount.getCapital() + request.getAmount());
                 customerAccount.setCapital(customerAccount.getCapital() - request.getAmount());
@@ -398,7 +398,7 @@ public class TransactionService {
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
                 accountTransferRepo.save(transfer);
-                customerRepo.saveAll(List.of(customer.get(),transferee.get()));
+                checkingAccountRepo.saveAll(List.of(transfereeAccount,customerAccount));
 
                 return new TransactionNotification(
                         customer.get().getEmail(),
