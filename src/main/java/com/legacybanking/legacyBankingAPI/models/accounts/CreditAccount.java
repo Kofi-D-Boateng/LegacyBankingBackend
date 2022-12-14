@@ -1,5 +1,6 @@
 package com.legacybanking.legacyBankingAPI.models.accounts;
 
+import com.legacybanking.legacyBankingAPI.Interfaces.AccountMethods;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Account;
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "credit_account")
-public class CreditAccount extends Account {
+public class CreditAccount extends Account implements AccountMethods {
     @Column(
             name = "annual_percentage_rate",
             columnDefinition = "Decimal(10,2) default '0.00'",
@@ -50,5 +51,21 @@ public class CreditAccount extends Account {
         this.usedCredit = 0.0D;
         this.minimumPayment = 0.0D;
         this.creditType = creditType;
+    }
+
+    @Override
+    public boolean deposit(Double amount) {
+        this.usedCredit-=amount;
+        return true;
+    }
+
+    @Override
+    public boolean withdraw(Double amount) {
+        Double currCapital = this.getCapital();
+        if(usedCredit+amount > currCapital){
+            return false;
+        }
+        usedCredit+=amount;
+        return true;
     }
 }
