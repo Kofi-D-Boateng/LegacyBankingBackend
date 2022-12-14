@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {LegacyBankingApiApplicationTests.class, })
+@SpringBootTest(classes = {LegacyBankingApiApplicationTests.class})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 class LegacyBankingApiApplicationTests {
 }

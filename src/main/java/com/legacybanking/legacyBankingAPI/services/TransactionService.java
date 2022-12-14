@@ -119,24 +119,25 @@ public class TransactionService {
                     log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,request.getLocation());
                     return false;
                 }
-                //      ADD A CREDIT LINE TO THE DATABASE SO YOU CAN HANDLE CREDIT CARD REFUNDS
+
                 if(request.getTransactionType().equals(TransactionType.REFUND)){
-                    customerAccount.setUsedCredit(customerAccount.getCapital() - request.getAmount());
-                    VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
-                            customerAccount.getAccountNumber(), request.getLocation(),
-                            request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
+                    if(customerAccount.deposit(request.getAmount())) {
+                        VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
+                                customerAccount.getAccountNumber(), request.getLocation(),
+                                request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
-                    vendorTransactionRepo.save(transaction);
-                    creditAccountRepo.save(customerAccount);
-                    return true;
-                }else if(request.getTransactionType().equals(TransactionType.PURCHASE)){
-
-                    if(customerAccount.getUsedCredit() + request.getAmount() > customerAccount.getCapital()){
-                        log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,request.getLocation());
+                        vendorTransactionRepo.save(transaction);
+                        creditAccountRepo.save(customerAccount);
+                        return true;
+                    }else{
                         return false;
                     }
+                }else if(request.getTransactionType().equals(TransactionType.PURCHASE)){
 
-                    customerAccount.setUsedCredit(customerAccount.getCapital() + request.getAmount());
+                    if(!customerAccount.withdraw(request.getAmount())) {
+                        log.info("Faulty transaction attempted at this time:{} at location:{}", timestamp, request.getLocation());
+                        return false;
+                    }
                     VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
                             customerAccount.getAccountNumber(), request.getLocation(),
                             request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
@@ -166,15 +167,7 @@ public class TransactionService {
 
                 CheckingAccount customerAccount = (CheckingAccount) customer.get().getAccounts().stream().parallel().filter(account -> account.getCard().equals(foundCard.get()));
 
-
-
-
                 log.info("TRANSACTION: {}", request);
-
-                if((customerAccount.getCapital() - request.getAmount()) < customerAccount.getMinimumBalance()){
-                    log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,request.getLocation());
-                    return false;
-                }
 
                 if(!customer.get().getIsActivated()){
                     log.info("Faulty transaction attempted at this time:{} at location:{}",timestamp,request.getLocation());
@@ -187,26 +180,31 @@ public class TransactionService {
                 }
 
                 if(request.getTransactionType().equals(TransactionType.REFUND)){
-                    customerAccount.setCapital(customerAccount.getCapital() + request.getAmount());
-                    VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
-                            customerAccount.getAccountNumber(), request.getLocation(),
-                            request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
+                    if(customerAccount.deposit(request.getAmount())){
+                        VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
+                                customerAccount.getAccountNumber(), request.getLocation(),
+                                request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
-                    vendorTransactionRepo.save(transaction);
-                    checkingAccountRepo.save(customerAccount);
-                    return true;
+                        vendorTransactionRepo.save(transaction);
+                        checkingAccountRepo.save(customerAccount);
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }else if(request.getTransactionType().equals(TransactionType.PURCHASE)){
-                    customerAccount.setCapital(customerAccount.getCapital() - request.getAmount());
-                    VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
-                            customerAccount.getAccountNumber(), request.getLocation(),
-                            request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
+                    if(customerAccount.withdraw(request.getAmount())) {
+                        VendorTransaction transaction = new VendorTransaction(request.getAmount(),customer.get(),
+                                customerAccount.getAccountNumber(), request.getLocation(),
+                                request.getTransactionType(),request.getDateOfTransaction(),request.getMerchantName(), request.getMerchantDescription(),currentDate,request.getType());
 
-                    vendorTransactionRepo.save(transaction);
-                    checkingAccountRepo.save(customerAccount);
-                    return true;
+                        vendorTransactionRepo.save(transaction);
+                        checkingAccountRepo.save(customerAccount);
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }
             }
-            return false;
         }
         return false;
     }
@@ -263,14 +261,13 @@ public class TransactionService {
 
         if(branch.getName().trim().length() > 0){
             if(request.getTransactionType().equals(TransactionType.WITHDRAW)){
-                if(account.getCapital() - request.getAmount() < account.getMinimumBalance()){
+                if(!account.withdraw(request.getAmount())){
                     log.info("CURRENT USER_ID:{} funds '{}' are too low for transaction",customer.get().getId(),account.getCapital());
                     return false;
                 }
                 request.setLocation(branch.getName());
                 branch.setBranchHoldings(branch.getBranchHoldings() - request.getAmount());
                 bank.setTotalHoldings(bank.getTotalHoldings() - request.getAmount());
-                account.setCapital(account.getCapital() - request.getAmount());
 
                 ATMTransaction transaction = new ATMTransaction(request.getAmount(), customer.get(), account.getAccountNumber(), request.getLocation(),
                         request.getTransactionType(),request.getDateOfTransaction(),currentDate,request.getType());
@@ -285,7 +282,7 @@ public class TransactionService {
                 request.setLocation(branch.getName());
                 branch.setBranchHoldings(branch.getBranchHoldings() + request.getAmount());
                 bank.setTotalHoldings(bank.getTotalHoldings() + request.getAmount());
-                account.setCapital(account.getCapital() + request.getAmount());
+                account.deposit(request.getAmount());
 
                 ATMTransaction transaction = new ATMTransaction(request.getAmount(), customer.get(), account.getAccountNumber(), request.getLocation(),
                         request.getTransactionType(),request.getDateOfTransaction(),currentDate,request.getType());
@@ -299,13 +296,13 @@ public class TransactionService {
             }
         }else{
             if(request.getTransactionType().equals(TransactionType.WITHDRAW)){
-                if(account.getCapital() - request.getAmount() < account.getMinimumBalance()){
+                Double taxedAmount = (request.getAmount() * (NON_AFFILIATED_TAX/100.00D));
+                if(!account.deposit(taxedAmount)){
                     log.info("CURRENT USER_ID:{} funds '{}' are too low for transaction",customer.get().getId(),account.getCapital());
                     return false;
                 }
                 request.setLocation(request.getLocation());
                 bank.setTotalHoldings(bank.getTotalHoldings() - request.getAmount() + (request.getAmount() * (NON_AFFILIATED_TAX / 100.00D)));
-                account.setCapital(account.getCapital() - (request.getAmount() * (NON_AFFILIATED_TAX/100.00D)));
 
                 ATMTransaction transaction = new ATMTransaction(request.getAmount(), customer.get(), account.getAccountNumber(), request.getLocation(),
                         request.getTransactionType(),request.getDateOfTransaction(),currentDate,request.getType());
@@ -359,7 +356,10 @@ public class TransactionService {
             }
 
             if(transferee.isEmpty()){
-                customerAccount.setCapital(customerAccount.getCapital() - request.getAmount());
+                if(!customerAccount.withdraw(request.getAmount())){
+                    return new TransactionNotification();
+                }
+
                 bank.get(0).setTotalHoldings(bank.get(0).getTotalHoldings()-request.getAmount());
                 BigDecimal bankHoldings = BigDecimal.valueOf(bank.get(0).getTotalHoldings());
                 Double newBranchHoldings = bankHoldings.multiply(BigDecimal.valueOf(100)).divide(new BigDecimal(branches.size()),2, RoundingMode.HALF_UP).doubleValue();
@@ -390,8 +390,8 @@ public class TransactionService {
                 String message = "Debit transfer to " + transferee.get().getFirstName()  + " " + transferee.get().getLastName();
                 CheckingAccount transfereeAccount = (CheckingAccount) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING));
 
-                transfereeAccount.setCapital( transfereeAccount.getCapital() + request.getAmount());
-                customerAccount.setCapital(customerAccount.getCapital() - request.getAmount());
+                transfereeAccount.deposit( request.getAmount());
+                customerAccount.withdraw(request.getAmount());
 
                 AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer.get(),customerAccount.getAccountNumber(),
                         "ONLINE",request.getTransactionType(),request.getDateOfTransaction(),transferee.get().getFirstName()  + " " + transferee.get().getLastName(),
