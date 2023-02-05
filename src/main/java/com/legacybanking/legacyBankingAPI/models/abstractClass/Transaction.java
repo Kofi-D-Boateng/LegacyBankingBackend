@@ -3,7 +3,7 @@ package com.legacybanking.legacyBankingAPI.models.abstractClass;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
 import com.legacybanking.legacyBankingAPI.enums.TransactionType;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.*;
 import org.hibernate.Hibernate;
 

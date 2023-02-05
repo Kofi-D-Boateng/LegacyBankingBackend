@@ -10,7 +10,7 @@ import com.legacybanking.legacyBankingAPI.models.accounts.SavingsAccount;
 import com.legacybanking.legacyBankingAPI.models.cards.CreditCard;
 import com.legacybanking.legacyBankingAPI.models.cards.DebitCard;
 import com.legacybanking.legacyBankingAPI.repos.CustomerRepo;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import com.legacybanking.legacyBankingAPI.models.securityAndTokens.SecurityModel;
 import com.legacybanking.legacyBankingAPI.repos.accountRepos.CheckingAccountRepo;
 import com.legacybanking.legacyBankingAPI.repos.accountRepos.CreditAccountRepo;

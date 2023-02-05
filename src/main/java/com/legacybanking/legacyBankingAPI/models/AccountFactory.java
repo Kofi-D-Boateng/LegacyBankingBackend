@@ -6,7 +6,7 @@ import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.CreditAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.SavingsAccount;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

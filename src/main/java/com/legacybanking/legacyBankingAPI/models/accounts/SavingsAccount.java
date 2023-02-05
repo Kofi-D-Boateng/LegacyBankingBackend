@@ -3,7 +3,7 @@ package com.legacybanking.legacyBankingAPI.models.accounts;
 import com.legacybanking.legacyBankingAPI.Interfaces.AccountMethods;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Account;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
