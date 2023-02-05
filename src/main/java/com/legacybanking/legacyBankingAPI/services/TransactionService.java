@@ -412,6 +412,6 @@ public class TransactionService {
             }
         }
 
-        return new TransactionNotification();
+        return null;
     }
 }

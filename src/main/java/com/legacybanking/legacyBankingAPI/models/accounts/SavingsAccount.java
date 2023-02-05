@@ -5,12 +5,14 @@ import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Account;
 import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "savings_account")
 public class SavingsAccount extends Account implements AccountMethods {
@@ -36,16 +38,19 @@ public class SavingsAccount extends Account implements AccountMethods {
 
     @Override
     public boolean deposit(Double amount) {
-        if(amount > maxAllowedContribution){
+        if(!this.getIsEnabled() || amount > maxAllowedContribution){
             return false;
         }
-        maxAllowedContribution+=amount;
+        this.setCapital(this.getCapital()+amount);
         return true;
     }
 
     @Override
     public boolean withdraw(Double amount) {
-        Double taxedAmount = (interestRate/100.00)*amount;
+        if(!this.getIsEnabled() || this.getCapital() <=0){
+            return false;
+        }
+        Double taxedAmount = (1.00D+(interestRate/100.00))*amount;
         this.setCapital(this.getCapital()-taxedAmount);
         return true;
     }

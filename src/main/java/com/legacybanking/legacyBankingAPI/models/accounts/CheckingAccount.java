@@ -32,6 +32,9 @@ public class CheckingAccount extends Account implements AccountMethods {
 
     @Override
     public boolean deposit(Double amount) {
+        if(!this.getIsEnabled()){
+            return  false;
+        }
         Double currCapital = getCapital();
         currCapital+=amount;
         this.setCapital(currCapital);
@@ -41,7 +44,7 @@ public class CheckingAccount extends Account implements AccountMethods {
     @Override
     public boolean withdraw(Double amount) {
         Double currCapital = getCapital();
-        if(currCapital - amount < minimumBalance){
+        if(!this.getIsEnabled() || currCapital - amount < minimumBalance){
             return false;
         }
         currCapital-=amount;

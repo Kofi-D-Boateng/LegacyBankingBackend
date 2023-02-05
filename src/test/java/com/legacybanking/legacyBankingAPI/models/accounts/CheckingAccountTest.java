@@ -20,7 +20,7 @@ class CheckingAccountTest {
     @Test
     void withdraw() {
         assertNotNull(checkingAccount);
-        Double depositAmt = 1500D;
-        assertFalse(checkingAccount.withdraw(depositAmt));
+        Double withdrawAmt = 1500D;
+        assertFalse(checkingAccount.withdraw(withdrawAmt));
     }
 }
