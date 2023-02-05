@@ -2,11 +2,11 @@ package com.legacybanking.legacyBankingAPI.services;
 
 import com.legacybanking.legacyBankingAPI.enums.CardType;
 import com.legacybanking.legacyBankingAPI.enums.CreditType;
-import com.legacybanking.legacyBankingAPI.enums.CustomerRole;
+import com.legacybanking.legacyBankingAPI.enums.UserRole;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Card;
 import com.legacybanking.legacyBankingAPI.models.cards.CreditCard;
 import com.legacybanking.legacyBankingAPI.repos.CustomerRepo;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import com.legacybanking.legacyBankingAPI.models.securityAndTokens.SecurityModel;
 import com.legacybanking.legacyBankingAPI.repos.cardRepos.CreditCardRepo;
 
@@ -44,7 +44,7 @@ class SecurityServiceTest {
     void setSecurity() {
         CreditCard creditCard = new CreditCard("12005679832155","031", LocalDateTime.now(),customer,false, CardType.CREDIT, CreditType.PLATINUM);
         customer = new Customer("Jon","Doe","Password", LocalDate.now(),"email@email.com"
-                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, CustomerRole.USER,false,2453L);
+                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, UserRole.USER,false,2453L);
         securityModel = new SecurityModel("","",creditCard.getCardNumber(),"LOCK CARD", customer.getEmail());
         Set<Card> set = new HashSet<>();
         set.add(creditCard);

@@ -5,7 +5,7 @@ import com.legacybanking.legacyBankingAPI.models.abstractClass.Card;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
 import com.legacybanking.legacyBankingAPI.models.cards.CreditCard;
 import com.legacybanking.legacyBankingAPI.models.cards.DebitCard;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 
 import java.time.LocalDateTime;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.legacybanking.legacyBankingAPI.models.customer;
+package com.legacybanking.legacyBankingAPI.models.user;
 
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.enums.CardType;

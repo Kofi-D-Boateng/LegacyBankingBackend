@@ -1,6 +1,6 @@
 package com.legacybanking.legacyBankingAPI.models.securityAndTokens;
 
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.*;
 
 import javax.persistence.*;

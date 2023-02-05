@@ -16,7 +16,7 @@ import com.legacybanking.legacyBankingAPI.models.transaction.vendorTransaction.V
 import com.legacybanking.legacyBankingAPI.repos.*;
 import com.legacybanking.legacyBankingAPI.models.bankEntity.Bank;
 import com.legacybanking.legacyBankingAPI.models.bankEntity.Branch;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import com.legacybanking.legacyBankingAPI.repos.accountRepos.CheckingAccountRepo;
 import com.legacybanking.legacyBankingAPI.repos.accountRepos.CreditAccountRepo;
 import com.legacybanking.legacyBankingAPI.repos.bankRepos.BankRepo;
@@ -88,7 +88,7 @@ class TransactionServiceTest {
     @BeforeEach
     void setUp() {
         customer = new Customer("Jon","Doe","Password", LocalDate.now(),"email@email.com"
-                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, CustomerRole.USER,true,2453L);
+                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, UserRole.USER,true,2453L);
 
         branch = new Branch(1L,"Legacy Bank West Branch","The United States",
                 "California","63452",new Bank(),500000.25D,73.34D,13.45D);
