@@ -3,7 +3,7 @@ package com.legacybanking.legacyBankingAPI.models.abstractClass;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.*;
 
 import javax.persistence.*;

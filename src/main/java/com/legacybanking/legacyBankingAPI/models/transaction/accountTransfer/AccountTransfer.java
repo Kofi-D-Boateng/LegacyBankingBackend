@@ -2,7 +2,7 @@ package com.legacybanking.legacyBankingAPI.models.transaction.accountTransfer;
 
 import com.legacybanking.legacyBankingAPI.enums.CardType;
 import com.legacybanking.legacyBankingAPI.enums.TransactionType;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Transaction;
 import lombok.*;
 

@@ -3,7 +3,7 @@ package com.legacybanking.legacyBankingAPI.models.cards;
 import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Card;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

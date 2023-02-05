@@ -4,7 +4,7 @@ import com.legacybanking.legacyBankingAPI.Interfaces.AccountMethods;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.enums.CreditType;
 import com.legacybanking.legacyBankingAPI.models.abstractClass.Account;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

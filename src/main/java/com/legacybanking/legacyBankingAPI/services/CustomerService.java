@@ -3,7 +3,8 @@ package com.legacybanking.legacyBankingAPI.services;
 import com.legacybanking.legacyBankingAPI.Interfaces.CustomerServices;
 import com.legacybanking.legacyBankingAPI.enums.CardType;
 import com.legacybanking.legacyBankingAPI.enums.CreditType;
-import com.legacybanking.legacyBankingAPI.enums.CustomerRole;
+import com.legacybanking.legacyBankingAPI.enums.Department;
+import com.legacybanking.legacyBankingAPI.enums.UserRole;
 import com.legacybanking.legacyBankingAPI.models.AccountFactory;
 import com.legacybanking.legacyBankingAPI.models.CardFactory;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
@@ -18,8 +19,8 @@ import com.legacybanking.legacyBankingAPI.repos.cardRepos.CreditCardRepo;
 import com.legacybanking.legacyBankingAPI.repos.cardRepos.DebitCardRepo;
 import com.legacybanking.legacyBankingAPI.repos.tokenRepo.ConfirmationTokenRepo;
 import com.legacybanking.legacyBankingAPI.repos.CustomerRepo;
-import com.legacybanking.legacyBankingAPI.models.customer.Customer;
-import com.legacybanking.legacyBankingAPI.models.customer.Registration;
+import com.legacybanking.legacyBankingAPI.models.user.Customer;
+import com.legacybanking.legacyBankingAPI.models.user.Registration;
 import com.legacybanking.legacyBankingAPI.models.securityAndTokens.VerificationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +75,7 @@ public class CustomerService implements CustomerServices {
         Customer newCustomer = new Customer(model.getFirstName(),
                 model.getLastName(),encryptedPassword,model.getDob(), model.getEmail(),
                 model.getCountry(), model.getState(), model.getZipcode(), encryptedSocialSecurity,
-                model.getPhoneNumber(), CustomerRole.USER,false, model.getCustomerPin());
+                model.getPhoneNumber(), UserRole.CUSTOMER, Department.NONE, false, model.getCustomerPin());
         VerificationToken verificationToken = new VerificationToken(
                 token,
                 LocalDateTime.now(),

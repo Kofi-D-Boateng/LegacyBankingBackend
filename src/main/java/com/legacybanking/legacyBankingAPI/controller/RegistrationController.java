@@ -1,7 +1,7 @@
 package com.legacybanking.legacyBankingAPI.controller;
 
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
-import com.legacybanking.legacyBankingAPI.models.customer.Registration;
+import com.legacybanking.legacyBankingAPI.models.user.Registration;
 import com.legacybanking.legacyBankingAPI.services.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
