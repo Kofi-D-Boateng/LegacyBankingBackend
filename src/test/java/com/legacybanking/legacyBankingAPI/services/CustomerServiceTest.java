@@ -1,8 +1,6 @@
 package com.legacybanking.legacyBankingAPI.services;
 
-import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
-import com.legacybanking.legacyBankingAPI.enums.CardType;
-import com.legacybanking.legacyBankingAPI.enums.CreditType;
+import com.legacybanking.legacyBankingAPI.enums.*;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.CreditAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.SavingsAccount;
@@ -15,7 +13,6 @@ import com.legacybanking.legacyBankingAPI.repos.cardRepos.CreditCardRepo;
 import com.legacybanking.legacyBankingAPI.repos.cardRepos.DebitCardRepo;
 import com.legacybanking.legacyBankingAPI.repos.tokenRepo.ConfirmationTokenRepo;
 import com.legacybanking.legacyBankingAPI.repos.CustomerRepo;
-import com.legacybanking.legacyBankingAPI.enums.UserRole;
 import com.legacybanking.legacyBankingAPI.models.user.Customer;
 import com.legacybanking.legacyBankingAPI.models.user.Registration;
 import com.legacybanking.legacyBankingAPI.models.securityAndTokens.VerificationToken;
@@ -73,7 +70,7 @@ class CustomerServiceTest {
     @BeforeEach
     public void setUp(){
         customer = new Customer("Jon","Doe","Password",LocalDate.now(),"email@email.com"
-                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, UserRole.USER,false,2453L);
+                ,"The United States","Texas",77777L,"000-00-0000",1000000000L, UserRole.CUSTOMER, Department.NONE,false,2453L);
 
         verificationToken = new VerificationToken("232jej21ej2e2", LocalDateTime.now(),LocalDateTime.now().plusMinutes(16),customer);
     }
