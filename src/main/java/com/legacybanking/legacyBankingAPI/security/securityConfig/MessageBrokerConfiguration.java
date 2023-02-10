@@ -26,7 +26,7 @@ public class MessageBrokerConfiguration {
     public static final String SECURITY_QUEUE_ROUTING_KEY = "security";
     public static final String NOTIFICATIONS_EXCHANGE = "notifications";
     public static final String BANKING_EXCHANGE = "bank";
-    public static final String INSERT_NOTIFICATION_ROUTING_KEY = "insert-notification";
+    public static final String INSERT_NOTIFICATION_ROUTING_KEY = "insert";
 
     @Bean
     Queue vendorTransactionQueue(){

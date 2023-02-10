@@ -24,6 +24,8 @@ public class TransactionController {
     private TransactionService transactionService;
     private final static String DECLINED = "APPROVED";
     private final static String ACCEPTED = "DENIED";
+    @Autowired
+    private final  RabbitTemplate rabbitTemplate;
     @RabbitListener(queues = MessageBrokerConfiguration.VENDOR_TRANSACTION_QUEUE)
     public void vendorTransaction(VendorTransactionRequest vendorTransaction) throws RuntimeException{
         log.info("Result of atm-transaction: {}", transactionService.vendorTransaction(vendorTransaction));
@@ -37,8 +39,7 @@ public class TransactionController {
     @RabbitListener(queues = MessageBrokerConfiguration.ACCOUNT_TRANSFER_QUEUE)
     public void accountTransfer(AccountTransferRequest transaction) {
         log.info("TRANSACTION: {}",transaction);
-        RabbitTemplate template = new RabbitTemplate();
         TransactionNotification notification = transactionService.accountTransfer(transaction);
-        template.convertAndSend(MessageBrokerConfiguration.NOTIFICATIONS_EXCHANGE,MessageBrokerConfiguration.INSERT_NOTIFICATION_ROUTING_KEY,notification);
+        rabbitTemplate.convertAndSend(MessageBrokerConfiguration.NOTIFICATIONS_EXCHANGE,MessageBrokerConfiguration.INSERT_NOTIFICATION_ROUTING_KEY,notification);
     }
 }
