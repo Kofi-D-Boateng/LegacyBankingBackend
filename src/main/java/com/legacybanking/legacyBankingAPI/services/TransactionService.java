@@ -330,18 +330,24 @@ public class TransactionService {
         List<Bank> bank = bankRepo.findAll();
         List<Branch> branches = branchRepo.findAll();
 
-        Optional<Customer> customer = customerRepo.findByEmail(request.getEmail());
+        Optional<Customer> optionalCustomer = customerRepo.findByEmail(request.getEmail());
 
-        if(customer.isEmpty()){
+        if(optionalCustomer.isEmpty()){
             return null;
         }
 
-        if(!customer.get().getIsActivated()){
+        Customer customer = optionalCustomer.get();
+
+        if(!customer.getIsActivated()){
             log.info("Faulty transaction attempted at this time:{}",timestamp);
             return null;
         }
 
-        CheckingAccount customerAccount = (CheckingAccount) customer.get().getAccounts().stream().parallel().filter(account1 -> account1.getAccountNumber().equals(request.getAccountNumber())).reduce((a,b)->{throw new IllegalStateException("Multiple elements: " + a + ", " + b);}).get();
+        CheckingAccount customerAccount = (CheckingAccount) customer.getAccounts().stream()
+                .parallel()
+                .filter(account1 -> account1.getAccountNumber().equals(request.getAccountNumber()))
+                .findFirst()
+                .orElse(null);
 
         if(request.getTransactionType().equals(TransactionType.TRANSFER)){
 
@@ -369,7 +375,7 @@ public class TransactionService {
                     branchRepo.save(branch);
                 });
 
-                AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer.get(),customerAccount.getAccountNumber(),
+                AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer,customerAccount.getAccountNumber(),
                         "ONLINE",request.getTransactionType(),request.getDateOfTransaction(),"Outside of Bank",
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
@@ -377,22 +383,24 @@ public class TransactionService {
                 checkingAccountRepo.save(customerAccount);
                 bankRepo.save(bank.get(0));
                 return new TransactionNotification(
-                        customer.get().getEmail(),
+                        customer.getEmail(),
                         request.getTransactionType(),
                         LocalDateTime.now(),
                         request.getAmount(),
                         "User outside of bank",
-                        customer.get().getFirstName() + " " + customer.get().getLastName(),
+                        customer.getFirstName() + " " + customer.getLastName(),
                         false
                 );
             }else{
                 String message = "Debit transfer to " + transferee.get().getFirstName()  + " " + transferee.get().getLastName();
-                CheckingAccount transfereeAccount = (CheckingAccount) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING));
 
-                transfereeAccount.deposit( request.getAmount());
+                CheckingAccount transfereeAccount = (CheckingAccount) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING)).findFirst()
+                        .orElse(null);
+
+                transfereeAccount.deposit(request.getAmount());
                 customerAccount.withdraw(request.getAmount());
 
-                AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer.get(),customerAccount.getAccountNumber(),
+                AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer,customerAccount.getAccountNumber(),
                         "ONLINE",request.getTransactionType(),request.getDateOfTransaction(),transferee.get().getFirstName()  + " " + transferee.get().getLastName(),
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
@@ -400,13 +408,13 @@ public class TransactionService {
                 checkingAccountRepo.saveAll(List.of(transfereeAccount,customerAccount));
 
                 return new TransactionNotification(
-                        customer.get().getEmail(),
+                        customer.getEmail(),
                         request.getTransactionType(),
-                        LocalDateTime.now(),
+                        request.getDateOfTransaction(),
                         request.getAmount(),
                         transferee.get().getEmail(),
                         transferee.get().getFirstName() + " " + transferee.get().getLastName(),
-                        customer.get().getFirstName() + " " + customer.get().getLastName(),
+                        customer.getFirstName() + " " + customer.getLastName(),
                         true
                 );
             }

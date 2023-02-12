@@ -1,5 +1,6 @@
 package com.legacybanking.legacyBankingAPI.models.securityAndTokens;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
@@ -15,4 +16,6 @@ public class SecurityModel {
     private String cardNumber;
     private String requestType;
     private String email;
+    @JsonIgnore
+    private String apiKey;
 }

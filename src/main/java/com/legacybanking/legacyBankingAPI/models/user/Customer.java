@@ -17,7 +17,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,19 +28,19 @@ public class Customer extends User {
     @Column(
             name = "transactions"
     )
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     @JsonManagedReference
     private List<Transaction> transactions;
 
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "customer")
     Set<Account> accounts = new HashSet<>();
 
     @Column(
             name="cards"
     )
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "customer")
     @JsonManagedReference
     private Set<Card> cards = new HashSet<>();
 
@@ -64,5 +63,15 @@ public class Customer extends User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + super.toString() +
+                "transactions=" + transactions +
+                ", accounts=" + accounts +
+                ", cards=" + cards +
+                ", accountPin=" + accountPin +
+                "} ";
     }
 }

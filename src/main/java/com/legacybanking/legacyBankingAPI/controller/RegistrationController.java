@@ -1,5 +1,6 @@
 package com.legacybanking.legacyBankingAPI.controller;
 
+import com.legacybanking.legacyBankingAPI.Interfaces.RegistrationServices;
 import com.legacybanking.legacyBankingAPI.enums.BankAccountType;
 import com.legacybanking.legacyBankingAPI.models.user.Registration;
 import com.legacybanking.legacyBankingAPI.services.CustomerService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/v2/admin/")
 @AllArgsConstructor
 @Slf4j
-public class RegistrationController {
+public class RegistrationController implements RegistrationServices {
     @Autowired
     private CustomerService customerService;
 
