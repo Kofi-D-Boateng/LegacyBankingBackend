@@ -106,7 +106,7 @@ class TransactionServiceTest {
         CreditAccount creditAccount = new CreditAccount(customer,"","",BankAccountType.CREDIT,1000.00
         ,true,28.0,CreditType.PLATINUM);
         VendorTransactionRequest newRequest = new VendorTransactionRequest(creditCard.getCardNumber(),creditCard.getCardVerificationCode(),customer.getFirstName()+" "+customer.getLastName(),creditCard.getExpirationDate()
-        ,creditCard.getType(),"LaLa Pizza","Pizzera/Bar",25.99, TransactionType.PURCHASE,LocalDateTime.now().minusHours(2),"New York");
+        ,creditCard.getType(),"LaLa Pizza","Pizzera/Bar",25.99, TransactionType.PURCHASE,LocalDateTime.now().minusHours(2),"New York","","");
 
         VendorTransaction transaction = new VendorTransaction(newRequest.getAmount(), customer,"", newRequest.getLocation(), newRequest.getTransactionType(),newRequest.getDateOfTransaction()
         , newRequest.getMerchantName(), newRequest.getMerchantDescription(), LocalDateTime.now(),creditCard.getType());
@@ -137,7 +137,7 @@ class TransactionServiceTest {
         DebitCard debitCard = new DebitCard("1200582714321009","432",LocalDateTime.now().plusYears(4),customer,false,CardType.DEBIT);
 
         ATMTransactionRequest request = new ATMTransactionRequest(debitCard.getCardNumber(), debitCard.getCardVerificationCode(),LocalDateTime.now()
-        ,debitCard.getType(),customer.getAccountPin(),3500.00,TransactionType.DEPOSIT,LocalDateTime.now(),branch.getName());
+        ,debitCard.getType(),customer.getAccountPin(),3500.00,TransactionType.DEPOSIT,LocalDateTime.now(),branch.getName(),"","");
 
         ATMTransaction transaction = new ATMTransaction(request.getAmount(),customer,"",request.getLocation(),request.getTransactionType()
         ,request.getDateOfTransaction(),LocalDateTime.now(),request.getType());
@@ -178,7 +178,7 @@ class TransactionServiceTest {
                 ,1500.00,true,30.00);
         DebitCard debitCard = new DebitCard("1200582714321009","432",LocalDateTime.now().plusYears(4),customer,false,CardType.DEBIT);
         AccountTransferRequest request = new AccountTransferRequest(customer.getEmail(),checkingAccount.getAccountNumber(),BankAccountType.CHECKING,"email5@email.com"
-        ,null,400.00,TransactionType.TRANSFER,LocalDateTime.now());
+        ,null,400.00,TransactionType.TRANSFER,LocalDateTime.now(),"","");
 
         Set<Card> cards = new HashSet<>();
         Set<Account> accounts = new HashSet<>();

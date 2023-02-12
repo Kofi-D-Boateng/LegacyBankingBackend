@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
 public class ATMTransactionRequest implements Serializable {
     private static final long serialVersionUID = 563326789L;
     private String cardNumber;

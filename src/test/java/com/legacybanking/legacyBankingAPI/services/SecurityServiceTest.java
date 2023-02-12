@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class SecurityServiceTest {
 
     SecurityModel securityModel;
@@ -46,7 +48,7 @@ class SecurityServiceTest {
         CreditCard creditCard = new CreditCard("12005679832155","031", LocalDateTime.now(),customer,false, CardType.CREDIT, CreditType.PLATINUM);
         customer = new Customer("Jon","Doe","Password", LocalDate.now(),"email@email.com"
                 ,"The United States","Texas",77777L,"000-00-0000",1000000000L, UserRole.CUSTOMER, Department.NONE,false,2453L);
-        securityModel = new SecurityModel("","",creditCard.getCardNumber(),"LOCK CARD", customer.getEmail());
+        securityModel = new SecurityModel("","",creditCard.getCardNumber(),"LOCK CARD", customer.getEmail(),"");
         Set<Card> set = new HashSet<>();
         set.add(creditCard);
         customer.setCards(set);
