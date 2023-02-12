@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class TransactionController {
+public class TransactionListener {
 
     @Autowired
     private TransactionService transactionService;
@@ -40,6 +40,7 @@ public class TransactionController {
     public void accountTransfer(AccountTransferRequest transaction) {
         log.info("TRANSACTION: {}",transaction);
         TransactionNotification notification = transactionService.accountTransfer(transaction);
+        log.info("NOTIFICATION: {}",notification);
         rabbitTemplate.convertAndSend(MessageBrokerConfiguration.NOTIFICATIONS_EXCHANGE,MessageBrokerConfiguration.INSERT_NOTIFICATION_ROUTING_KEY,notification);
     }
 }

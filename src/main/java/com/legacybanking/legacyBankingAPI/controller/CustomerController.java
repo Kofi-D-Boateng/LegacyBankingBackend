@@ -32,9 +32,9 @@ public class CustomerController {
         return customerService.getCustomerInfo(username);
     }
 
-    @RabbitListener(queues = MessageBrokerConfiguration.SECURITY_QUEUE)
-    public boolean configureSecurity(SecurityModel security){
-        log.info("CONFIG: {}",security);
-        return securityService.setSecurity(security);
-    }
+//    @RabbitListener(queues = MessageBrokerConfiguration.SECURITY_QUEUE)
+//    public boolean configureSecurity(SecurityModel security){
+//        log.info("CONFIG: {}",security);
+//        return securityService.setSecurity(security);
+//    }
 }

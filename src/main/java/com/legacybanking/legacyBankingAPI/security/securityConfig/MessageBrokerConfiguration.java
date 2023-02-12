@@ -20,13 +20,14 @@ public class MessageBrokerConfiguration {
     public static final String VENDOR_TRANSACTION_ROUTING_KEY = "vendor";
     public static final String ATM_TRANSACTION_QUEUE = "atm-transaction";
     public static final String ATM_TRANSACTION_ROUTING_KEY = "atm";
-    public static final String ACCOUNT_TRANSFER_QUEUE = "account-transfer";
+    public static final String ACCOUNT_TRANSFER_QUEUE = "account-transaction";
     public static final String ACCOUNT_TRANSFER_ROUTING_KEY = "account";
-    public static final String SECURITY_QUEUE = "update-customer-security";
-    public static final String SECURITY_QUEUE_ROUTING_KEY = "security";
-    public static final String NOTIFICATIONS_EXCHANGE = "notifications";
+    public static final String SECURITY_QUEUE = "customer-security";
+    public static final String SECURITY_QUEUE_ROUTING_KEY = "customer";
     public static final String BANKING_EXCHANGE = "bank";
     public static final String INSERT_NOTIFICATION_ROUTING_KEY = "insert";
+
+    public static final String NOTIFICATIONS_EXCHANGE = "notifications";
 
     @Bean
     Queue vendorTransactionQueue(){
@@ -85,7 +86,6 @@ public class MessageBrokerConfiguration {
 
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        return  rabbitTemplate;
+        return new RabbitTemplate(connectionFactory);
     }
 }
