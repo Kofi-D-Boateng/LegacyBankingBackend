@@ -32,10 +32,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v2/admin/**").permitAll()
-                .antMatchers("/api/v2/authentication/**").permitAll()
                 .antMatchers("/api/v2/bank/**").permitAll()
-                .antMatchers("/api/v2/customer/**").permitAll()
-                .antMatchers("/api/v2/secure/transaction/**").permitAll();
+                .antMatchers("/api/v2/customer/**").permitAll();
     }
 
 }

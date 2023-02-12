@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
@@ -110,5 +109,25 @@ public abstract class User {
         this.userRole = userRole;
         this.department = department;
         this.isActivated = isActivated;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", dob=" + dob +
+                ", email='" + email + '\'' +
+                ", country='" + country + '\'' +
+                ", state='" + state + '\'' +
+                ", zipcode=" + zipcode +
+                ", socialSecurity='" + socialSecurity + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", userRole=" + userRole +
+                ", department=" + department +
+                ", isActivated=" + isActivated +
+                '}';
     }
 }

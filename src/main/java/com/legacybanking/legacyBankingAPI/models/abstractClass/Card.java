@@ -55,6 +55,7 @@ public abstract class Card {
     @OneToOne
     @JoinColumn(name = "account_number")
     @JsonIgnore
+    @ToString.Exclude
     private Account account;
 
     @Column(
