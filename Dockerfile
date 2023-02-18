@@ -1,4 +1,11 @@
-FROM amazoncorretto:17-alpine3.14
+FROM maven:3.8.3-amazoncorretto-17 AS build-stage
+WORKDIR /app
+COPY . .
+# BUILD THE JAR
+RUN mvn package
+
+FROM openjdk:17-alpine
+WORKDIR /app
+COPY --from=build-stage /app/*.jar .
 EXPOSE 8080
-ADD target/legacyBankingAPI-0.0.1-SNAPSHOT.jar legacyBankingAPI.jar
-ENTRYPOINT ["java","-jar","legacyBankingAPI.jar"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
