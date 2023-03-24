@@ -1,6 +1,7 @@
 package com.legacybanking.legacyBankingAPI.services;
 
 import com.legacybanking.legacyBankingAPI.enums.*;
+import com.legacybanking.legacyBankingAPI.models.EmailAttributes;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.CreditAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.SavingsAccount;
@@ -121,9 +122,9 @@ class CustomerServiceTest {
         lenient().when(bCryptPasswordEncoder.encode(registration.getPassword())).thenReturn(encryptedPassword);
         lenient().when(bCryptPasswordEncoder.encode(registration.getSocialSecurity())).thenReturn(encryptedSocialSecurity);
         lenient().when(customerRepo.save(customer)).thenReturn(customer);
-        String token = customerService.registerCustomer(registration);
+        EmailAttributes attributes = customerService.registerCustomer(registration);
 
-        assertTrue(token.trim().length() != 0);
+        assertNotNull(attributes);
     }
 
 

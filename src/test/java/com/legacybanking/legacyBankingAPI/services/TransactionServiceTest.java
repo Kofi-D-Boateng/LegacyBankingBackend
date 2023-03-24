@@ -178,7 +178,7 @@ class TransactionServiceTest {
                 ,1500.00,true,30.00);
         DebitCard debitCard = new DebitCard("1200582714321009","432",LocalDateTime.now().plusYears(4),customer,false,CardType.DEBIT);
         AccountTransferRequest request = new AccountTransferRequest(customer.getEmail(),checkingAccount.getAccountNumber(),BankAccountType.CHECKING,"email5@email.com"
-        ,null,400.00,TransactionType.TRANSFER,LocalDateTime.now(),"","");
+        ,null,400.00,TransactionType.TRANSFER,0L,"","");
 
         Set<Card> cards = new HashSet<>();
         Set<Account> accounts = new HashSet<>();
