@@ -3,6 +3,7 @@ package com.legacybanking.legacyBankingAPI.models.transaction;
 import com.legacybanking.legacyBankingAPI.enums.TransactionType;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionNotification implements Serializable {
+    @Serial
     private static final long serialVersionUID = 90216789L;
     private String email;
     private TransactionType type;

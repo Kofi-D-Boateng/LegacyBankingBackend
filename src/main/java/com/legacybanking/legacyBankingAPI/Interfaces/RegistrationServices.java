@@ -4,6 +4,6 @@ import com.legacybanking.legacyBankingAPI.models.user.Registration;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface RegistrationServices {
-    String register(@RequestBody Registration registration);
+    void register(@RequestBody Registration registration);
     String createCustomerAccountAndCard(@RequestBody Registration model);
 }

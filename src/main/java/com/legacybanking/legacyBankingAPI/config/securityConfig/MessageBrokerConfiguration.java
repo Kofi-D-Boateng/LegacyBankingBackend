@@ -1,5 +1,4 @@
-package com.legacybanking.legacyBankingAPI.security.securityConfig;
-
+package com.legacybanking.legacyBankingAPI.config.securityConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -88,4 +87,5 @@ public class MessageBrokerConfiguration {
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
         return new RabbitTemplate(connectionFactory);
     }
+
 }

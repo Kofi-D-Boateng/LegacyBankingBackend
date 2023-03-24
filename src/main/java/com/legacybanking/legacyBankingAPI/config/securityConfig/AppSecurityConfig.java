@@ -1,4 +1,4 @@
-package com.legacybanking.legacyBankingAPI.security.securityConfig;
+package com.legacybanking.legacyBankingAPI.config.securityConfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
