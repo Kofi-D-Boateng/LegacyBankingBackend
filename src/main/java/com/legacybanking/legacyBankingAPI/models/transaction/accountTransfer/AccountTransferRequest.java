@@ -25,8 +25,7 @@ public class AccountTransferRequest implements Serializable {
     private Long PhoneNumberOfTransferee;
     private Double amount;
     private TransactionType transactionType;
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime dateOfTransaction;
+    private Long dateOfTransaction;
     @JsonIgnore
     private String apiKey;
     @JsonIgnore
