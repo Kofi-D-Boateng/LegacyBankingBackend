@@ -7,6 +7,7 @@ import com.legacybanking.legacyBankingAPI.enums.Department;
 import com.legacybanking.legacyBankingAPI.enums.UserRole;
 import com.legacybanking.legacyBankingAPI.models.AccountFactory;
 import com.legacybanking.legacyBankingAPI.models.CardFactory;
+import com.legacybanking.legacyBankingAPI.models.EmailAttributes;
 import com.legacybanking.legacyBankingAPI.models.accounts.CheckingAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.CreditAccount;
 import com.legacybanking.legacyBankingAPI.models.accounts.SavingsAccount;
@@ -66,9 +67,9 @@ public class CustomerService implements CustomerServices {
     private CreditCardRepo creditCardRepo;
 
     @Override
-    public String registerCustomer(@NotNull Registration model) {
+    public EmailAttributes registerCustomer(@NotNull Registration model) {
         Optional<Customer> customer = customerRepo.findByEmail(model.getEmail());
-        if(customer.isPresent()) return UNSUCCESSFUL;
+        if(customer.isPresent()) return null;
         String token = UUID.randomUUID().toString();
         String encryptedPassword = bCryptPasswordEncoder.encode(model.getPassword());
         String encryptedSocialSecurity = bCryptPasswordEncoder.encode(model.getSocialSecurity());
@@ -85,10 +86,10 @@ public class CustomerService implements CustomerServices {
         try {
             customerRepo.save(newCustomer);
             tokenRepo.save(verificationToken);
-            return token;
+            return new EmailAttributes(token,newCustomer.getFirstName()+newCustomer.getLastName(),newCustomer.getEmail());
         }catch (IllegalStateException e){
             log.info("Error: {}",e);
-            return UNSUCCESSFUL;
+            return null;
         }
     }
 

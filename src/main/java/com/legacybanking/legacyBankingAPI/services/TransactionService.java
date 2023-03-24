@@ -37,7 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -329,6 +331,7 @@ public class TransactionService {
     public TransactionNotification accountTransfer(AccountTransferRequest request){
         List<Bank> bank = bankRepo.findAll();
         List<Branch> branches = branchRepo.findAll();
+        Instant instant = Instant.ofEpochMilli(request.getDateOfTransaction());
 
         Optional<Customer> optionalCustomer = customerRepo.findByEmail(request.getEmail());
 
@@ -348,6 +351,10 @@ public class TransactionService {
                 .filter(account1 -> account1.getAccountNumber().equals(request.getAccountNumber()))
                 .findFirst()
                 .orElse(null);
+
+        if(customerAccount == null){
+            return null;
+        }
 
         if(request.getTransactionType().equals(TransactionType.TRANSFER)){
 
@@ -376,7 +383,7 @@ public class TransactionService {
                 });
 
                 AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer,customerAccount.getAccountNumber(),
-                        "ONLINE",request.getTransactionType(),request.getDateOfTransaction(),"Outside of Bank",
+                        "ONLINE",request.getTransactionType(),LocalDateTime.ofInstant(instant, ZoneId.systemDefault()),"Outside of Bank",
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
                 accountTransferRepo.save(transfer);
@@ -385,7 +392,7 @@ public class TransactionService {
                 return new TransactionNotification(
                         customer.getEmail(),
                         request.getTransactionType(),
-                        LocalDateTime.now(),
+                        request.getDateOfTransaction(),
                         request.getAmount(),
                         "User outside of bank",
                         customer.getFirstName() + " " + customer.getLastName(),
@@ -397,11 +404,15 @@ public class TransactionService {
                 CheckingAccount transfereeAccount = (CheckingAccount) transferee.get().getAccounts().stream().parallel().filter(account1 -> account1.getBankAccountType().equals(BankAccountType.CHECKING)).findFirst()
                         .orElse(null);
 
+                if(transfereeAccount == null){
+                    return null;
+                }
+
                 transfereeAccount.deposit(request.getAmount());
                 customerAccount.withdraw(request.getAmount());
 
                 AccountTransfer transfer = new AccountTransfer(request.getAmount(),customer,customerAccount.getAccountNumber(),
-                        "ONLINE",request.getTransactionType(),request.getDateOfTransaction(),transferee.get().getFirstName()  + " " + transferee.get().getLastName(),
+                        "ONLINE",request.getTransactionType(),LocalDateTime.ofInstant(instant, ZoneId.systemDefault()),transferee.get().getFirstName()  + " " + transferee.get().getLastName(),
                         true,currentDate,CardType.ACCOUNT_TRANSFER_PLACEHOLDER);
 
                 accountTransferRepo.save(transfer);

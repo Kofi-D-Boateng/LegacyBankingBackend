@@ -1,7 +1,7 @@
 package com.legacybanking.legacyBankingAPI.controller;
 
 import com.legacybanking.legacyBankingAPI.models.securityAndTokens.SecurityModel;
-import com.legacybanking.legacyBankingAPI.security.securityConfig.MessageBrokerConfiguration;
+import com.legacybanking.legacyBankingAPI.config.securityConfig.MessageBrokerConfiguration;
 import com.legacybanking.legacyBankingAPI.services.SecurityService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
